@@ -27,8 +27,8 @@ Route::middleware(['auth'])->group(function () {
 //     return Socialite::driver($provider)->redirect();
 // })->name('socialite.redirect');
 
-Route::get('/auth/{provider}/redirect', '\App\Http\Controllers\Auth\AuthController@redirectToProvider')->name('socialite.redirect');
-Route::get('/auth/{provider}/callback', '\App\Http\Controllers\Auth\AuthController@handleProviderCallback')->name('socialite.callback');
+Route::get('auth/{provider}/redirect', '\App\Http\Controllers\Auth\AuthController@redirectToProvider')->name('socialite.redirect');
+Route::get('auth/{provider}/callback', '\App\Http\Controllers\Auth\AuthController@handleProviderCallback')->name('socialite.callback');
 
 // Route::get('/auth/{provider}/callback', function (string $provider) {
 //     try {

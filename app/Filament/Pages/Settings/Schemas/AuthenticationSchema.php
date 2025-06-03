@@ -48,7 +48,7 @@ class AuthenticationSchema
                             Placeholder::make('auth.azure.redirect')
                                 ->label('Redirect URL')
                                 ->visible(fn ($get) => $get('auth.azure.enabled'))
-                                ->content(config('app.url').'/auth/azure/callback'),
+                                ->content(config('app.url').'auth/azure/callback'),
                             Toggle::make('auth.azure.auto_provision')
                                 ->live()
                                 ->label('Auto Provision Users')
@@ -95,7 +95,7 @@ class AuthenticationSchema
                             Placeholder::make('auth.okta.redirect')
                                 ->label('Redirect URL')
                                 ->visible(fn ($get) => $get('auth.okta.enabled'))
-                                ->content(config('app.url').'/auth/okta/callback'),
+                                ->content(config('app.url').'auth/okta/callback'),
                             Toggle::make('auth.okta.auto_provision')
                                 ->live()
                                 ->label('Auto Provision Users')
@@ -138,7 +138,7 @@ class AuthenticationSchema
                             Placeholder::make('auth.google.redirect')
                                 ->label('Redirect URL')
                                 ->visible(fn ($get) => $get('auth.google.enabled'))
-                                ->content(config('app.url').'/auth/google/callback'),
+                                ->content(config('app.url').'auth/google/callback'),
                             Toggle::make('auth.google.auto_provision')
                                 ->live()
                                 ->label('Auto Provision Users')
@@ -185,7 +185,7 @@ class AuthenticationSchema
                             Placeholder::make('auth.auth0.redirect')
                                 ->label('Redirect URL')
                                 ->visible(fn ($get) => $get('auth.auth0.enabled'))
-                                ->content(config('app.url').'/auth/auth0/callback'),
+                                ->content(config('app.url').'auth/auth0/callback'),
                             Toggle::make('auth.auth0.auto_provision')
                                 ->live()
                                 ->label('Auto Provision Users')

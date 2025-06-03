@@ -21,7 +21,7 @@ class SocialiteServiceProvider extends ServiceProvider
                         'client_id' => setting('auth.okta.client_id'),
                         'client_secret' => $clientSecret ? Crypt::decryptString($clientSecret) : null,
                         'base_url' => setting('auth.okta.base_url'),
-                        'redirect' => "{$baseUrl}/auth/okta/callback",
+                        'redirect' => "{$baseUrl}auth/okta/callback",
                     ],
                 ]);
             }
@@ -46,7 +46,7 @@ class SocialiteServiceProvider extends ServiceProvider
                         'client_id' => setting('auth.azure.client_id'),
                         'client_secret' => $clientSecret ? Crypt::decryptString($clientSecret) : null,
                         'tenant' => setting('auth.azure.tenant', 'common'),
-                        'redirect' => "{$baseUrl}/auth/azure/callback",
+                        'redirect' => "{$baseUrl}auth/azure/callback",
                     ],
                 ]);
             }
@@ -59,7 +59,7 @@ class SocialiteServiceProvider extends ServiceProvider
                         'client_id' => setting('auth.auth0.client_id'),
                         'client_secret' => $clientSecret ? Crypt::decryptString($clientSecret) : null,
                         'domain' => setting('auth.auth0.domain'),
-                        'redirect' => "{$baseUrl}/auth/auth0/callback",
+                        'redirect' => "{$baseUrl}auth/auth0/callback",
                     ],
                 ]);
             }
