@@ -51,3 +51,7 @@ echo "Installing Composer Dependencies..."
 ## Migrate the database
 echo "Migrating the database..."
 php artisan migrate
+
+# Build the Frontend
+echo "Building the frontend dependencies..."
+npm run build
