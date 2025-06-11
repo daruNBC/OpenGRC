@@ -25,7 +25,6 @@ return new class extends Migration
             $table->unsignedBigInteger('manager_id')->nullable();
             $table->foreign('manager_id')->references('id')->on('users');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

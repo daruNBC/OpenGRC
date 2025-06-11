@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuditItem extends Model
 {
-    use SoftDeletes;
 
     protected $fillable = ['audit_id', 'user_id', 'control_id', 'auditor_notes', 'status', 'effectiveness', 'applicability'];
 

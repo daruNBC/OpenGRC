@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('file_attachments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('data_request_response_id');
-            $table->foreignId('audit_id');
+            $table->foreignId('audit_id')->constrained()->onDelete('cascade');
             $table->string('file_name')->nullable();
             $table->string('file_path');
             $table->string('file_size')->nullable();

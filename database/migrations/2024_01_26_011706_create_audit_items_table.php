@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('effectiveness')->default('Unknown');
             $table->string('applicability')->default('Unknown');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
