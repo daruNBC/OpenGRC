@@ -21,43 +21,27 @@ return new class extends Migration
             }
         }
 
-        // Helper to drop FK if it exists
-        $dropForeignIfExists = function (string $tableName, string $columnName) {
-            $foreignKeyExists = DB::table('information_schema.KEY_COLUMN_USAGE')
-                ->where('TABLE_NAME', $tableName)
-                ->where('TABLE_SCHEMA', DB::getDatabaseName())
-                ->where('COLUMN_NAME', $columnName)
-                ->whereNotNull('REFERENCED_TABLE_NAME')
-                ->exists();
-
-            if ($foreignKeyExists) {
-                Schema::table($tableName, function (Blueprint $table) use ($columnName) {
-                    $table->dropForeign([$columnName]);
-                });
-            }
-        };
-
         // Ensure cascading delete on audit_id in data_requests
-        $dropForeignIfExists('data_requests', 'audit_id');
         Schema::table('data_requests', function (Blueprint $table) {
+            $table->dropForeign(['audit_id']);
             $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
         });
 
-        // Ensure cascading delete on audit_item_id in data_requests (missing in original)
-        $dropForeignIfExists('data_requests', 'audit_item_id');
+        // Ensure cascading delete on audit_item_id in data_requests
         Schema::table('data_requests', function (Blueprint $table) {
+            $table->dropForeign(['audit_item_id']);
             $table->foreign('audit_item_id')->references('id')->on('audit_items')->onDelete('cascade');
         });
 
         // Ensure cascading delete on audit_id in audit_items
-        $dropForeignIfExists('audit_items', 'audit_id');
         Schema::table('audit_items', function (Blueprint $table) {
+            $table->dropForeign(['audit_id']);
             $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
         });
 
         // Ensure cascading delete on audit_id in file_attachments
-        $dropForeignIfExists('file_attachments', 'audit_id');
         Schema::table('file_attachments', function (Blueprint $table) {
+            $table->dropForeign(['audit_id']);
             $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
         });
     }
