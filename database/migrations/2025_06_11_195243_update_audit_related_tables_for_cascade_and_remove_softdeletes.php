@@ -40,10 +40,37 @@ return new class extends Migration
         });
 
         // Ensure cascading delete on audit_id in file_attachments
-        Schema::table('file_attachments', function (Blueprint $table) {
-            $table->dropForeign(['audit_id']);
-            $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
-        });
+        if (DB::getDriverName() === 'mysql') {
+            $fkName = null;
+            $results = DB::select("
+                SELECT CONSTRAINT_NAME
+                FROM information_schema.KEY_COLUMN_USAGE
+                WHERE TABLE_SCHEMA = DATABASE()
+                  AND TABLE_NAME = 'file_attachments'
+                  AND COLUMN_NAME = 'audit_id'
+                  AND REFERENCED_TABLE_NAME = 'audits'
+            ");
+            if (!empty($results)) {
+                $fkName = $results[0]->CONSTRAINT_NAME;
+            }
+
+            Schema::table('file_attachments', function (Blueprint $table) use ($fkName) {
+                if ($fkName) {
+                    $table->dropForeign($fkName);
+                }
+                $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
+            });
+        } else {
+            // For SQLite or other DBs, just try to drop the foreign key by column name (if it exists)
+            Schema::table('file_attachments', function (Blueprint $table) {
+                try {
+                    $table->dropForeign(['audit_id']);
+                } catch (\Exception $e) {
+                    // Ignore if not supported or doesn't exist
+                }
+                $table->foreign('audit_id')->references('id')->on('audits')->onDelete('cascade');
+            });
+        }
     }
 
     /**

@@ -42,36 +42,44 @@ return new class extends Migration
         $applicationPermissions = Permission::where('category', 'Applications')->get();
 
         // Assign permissions to Super Admin (all permissions)
-        $superAdmin->givePermissionTo($vendorPermissions);
-        $superAdmin->givePermissionTo($applicationPermissions);
+        if ($superAdmin) {
+            $superAdmin->givePermissionTo($vendorPermissions);
+            $superAdmin->givePermissionTo($applicationPermissions);
+        }
 
         // Assign permissions to Regular User (List and Read only)
-        $regular->givePermissionTo([
-            'List Vendors',
-            'Read Vendors',
-            'List Applications',
-            'Read Applications',
-        ]);
+        if ($regular) {
+            $regular->givePermissionTo([
+                'List Vendors',
+                'Read Vendors',
+                'List Applications',
+                'Read Applications',
+            ]);
+        }
 
         // Assign permissions to Security Admin (List, Create, Read, Update - no Delete)
-        $securityAdmin->givePermissionTo([
-            'List Vendors',
-            'Create Vendors',
-            'Read Vendors',
-            'Update Vendors',
-            'List Applications',
-            'Create Applications',
-            'Read Applications',
-            'Update Applications',
-        ]);
+        if ($securityAdmin) {
+            $securityAdmin->givePermissionTo([
+                'List Vendors',
+                'Create Vendors',
+                'Read Vendors',
+                'Update Vendors',
+                'List Applications',
+                'Create Applications',
+                'Read Applications',
+                'Update Applications',
+            ]);
+        }
 
         // Assign permissions to Internal Auditor (List and Read only)
-        $internalAuditor->givePermissionTo([
-            'List Vendors',
-            'Read Vendors',
-            'List Applications',
-            'Read Applications',
-        ]);
+        if ($internalAuditor) {
+            $internalAuditor->givePermissionTo([
+                'List Vendors',
+                'Read Vendors',
+                'List Applications',
+                'Read Applications',
+            ]);
+        }
     }
 
     /**
