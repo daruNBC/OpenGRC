@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\ServiceProvider;
 use Schema;
@@ -28,8 +27,21 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // if table "settings" exists
-        if (! app()->runningInConsole()) {
+        // Only skip the install check if running the installer command
+        $isInstaller = false;
+        if ($this->app->runningInConsole()) {
+            $argv = $_SERVER['argv'] ?? [];
+            if (isset($argv[1]) && (
+               $argv[1] === 'opengrc:install' 
+            || $argv[1] === 'package:discover'
+            || $argv[1] === 'filament:upgrade'
+            || $argv[1] === 'vendor:publish'
+            )) {
+                $isInstaller = true;
+            }
+        }
+
+        if (! $isInstaller) {
             if (Schema::hasTable('settings')) {
 
                 Config::set('app.name', setting('general.name', 'OpenGRC'));
@@ -62,23 +74,15 @@ class AppServiceProvider extends ServiceProvider
                 if ($storageDriver === 's3') {
                     $s3Key = setting('storage.s3.key');
                     $s3Secret = setting('storage.s3.secret');
-
+                    
                     // Decrypt credentials if they exist and are encrypted
                     try {
-                        if (!empty($s3Key)) {
-                            $s3Key = Crypt::decryptString($s3Key);
+                        if (!empty($s3Key)) {                            
+                            $s3Key = Crypt::decryptString($s3Key);                        
                         }
                         if (!empty($s3Secret)) {
                             $s3Secret = Crypt::decryptString($s3Secret);
                         }
-                    } catch (\Exception $e) {
-                        // If decryption fails, log it but don't expose the error
-                        \Log::error('Failed to decrypt S3 credentials: ' . $e->getMessage());
-                        // Fall back to local storage if S3 credentials can't be decrypted
-                        $storageDriver = 'private';
-                    }
-
-                    if ($storageDriver === 's3') {
                         config()->set('filesystems.disks.s3', array_merge(config('filesystems.disks.s3', []), [
                             'driver' => 's3',
                             'key' => $s3Key,
@@ -87,6 +91,11 @@ class AppServiceProvider extends ServiceProvider
                             'bucket' => setting('storage.s3.bucket'),
                             'use_path_style_endpoint' => false,
                         ]));
+                    } catch (\Exception $e) {
+                        // If decryption fails, log it but don't expose the error
+                        \Log::error('Failed to decrypt S3 credentials: ' . $e->getMessage());
+                        // Fall back to local storage if S3 credentials can't be decrypted
+                        $storageDriver = 'private';
                     }
                 }
 
