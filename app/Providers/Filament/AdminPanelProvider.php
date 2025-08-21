@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->brandName(name: 'OpenGRC Admin')
+            ->viteTheme('resources/css/filament/app/theme.css')
             ->brandLogo(fn () => view('filament.admin.logo'))
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -51,6 +52,8 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \App\Http\Middleware\UserActivityMonitor::class,
+                \App\Http\Middleware\SessionTimeout::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -66,6 +69,9 @@ class AdminPanelProvider extends PanelProvider
                     ->url("/app", shouldOpenInNewTab: false)
                     ->icon('heroicon-o-arrow-left')
             ])
-            ;
+            ->renderHook(
+                'panels::body.end',
+                fn () => auth()->check() ? view('components.session-timeout-warning') : ''
+            );
     }
 }
