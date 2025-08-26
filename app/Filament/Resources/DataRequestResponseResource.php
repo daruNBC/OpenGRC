@@ -91,7 +91,7 @@ class DataRequestResponseResource extends Resource
                                     ->label('File')
                                     ->required()
                                     ->preserveFilenames()
-                                    ->disk(config('filesystems.default'))
+                                    ->disk(setting('storage.driver', 'private'))
                                     ->directory('data-request-attachments')
                                     ->storeFileNamesIn('file_name')
                                     ->visibility('private')
@@ -106,7 +106,7 @@ class DataRequestResponseResource extends Resource
                                     })
                                     ->deleteUploadedFileUsing(function ($state) {
                                         if ($state) {
-                                            Storage::disk(config('filesystems.default'))->delete($state);
+                                            Storage::disk(setting('storage.driver', 'private'))->delete($state);
                                         }
                                     }),
 

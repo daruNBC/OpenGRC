@@ -40,6 +40,9 @@ echo ""
 echo -e "################################################################"
 echo ""
 
+## Trash dynamic files
+git stash
+
 ## Pull the latest changes
 echo "Pulling the latest changes..."
 git pull
