@@ -11,41 +11,50 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Wizard;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Pages\Page;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Illuminate\Support\HtmlString;
 use League\Csv\Reader;
 use Notification;
 
 class Import extends Page
 {
-    use HasWizard, InteractsWithForms; //, InteractsWithRecord;
+    use HasWizard, InteractsWithForms; // , InteractsWithRecord;
+
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-tray';
 
     protected static ?string $navigationGroup = 'Tools';
-    protected static ?string $navigationLabel = 'Import';
-    protected static ?string $navigationDescription = 'Import data from a file';
-    protected static ?string $label = 'Import';
-    protected static string $view = 'filament.pages.import';  
 
-    //Hide this page from the navigation
+    protected static ?string $navigationLabel = 'Import';
+
+    protected static ?string $navigationDescription = 'Import data from a file';
+
+    protected static ?string $label = 'Import';
+
+    protected static string $view = 'filament.pages.import';
+
+    // Hide this page from the navigation
     protected static bool $shouldRegisterNavigation = false;
 
-
     public ?array $data_file;
+
     public ?string $import_type = 'controls';
+
     public ?string $data_file_path;
+
     public bool $isDataFileValid = false;
+
     public ?array $data_file_data;
+
     public ?array $data = [];
+
     public ?array $finalData = [];
 
     public $currentItems;
-    
+
     public function form(Form $form): Form
     {
         return $form
@@ -76,8 +85,8 @@ class Import extends Page
                                         $this->isDataFileValid = $this->validateDataFile();
                                     }
                                 }),
-                            
-                        ]),                    
+
+                        ]),
                     Wizard\Step::make('Confirm Import')
                         ->label('Confirm Import')
                         ->schema([
@@ -90,21 +99,22 @@ class Import extends Page
                                     'data' => $this->finalData ?? [],
                                     'users' => $this->users ?? [],
                                 ]),
-                        ])                        
+                        ]),
                 ])
-                ->submitAction(new HtmlString('<button class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action" style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);" type="submit">Import Records</button>')),
+                    ->submitAction(new HtmlString('<button class="fi-btn relative grid-flow-col items-center justify-center font-semibold outline-none transition duration-75 focus-visible:ring-2 rounded-lg fi-color-custom fi-btn-color-primary fi-color-primary fi-size-md fi-btn-size-md gap-1.5 px-3 py-2 text-sm inline-grid shadow-sm bg-custom-600 text-white hover:bg-custom-500 focus-visible:ring-custom-500/50 dark:bg-custom-500 dark:hover:bg-custom-400 dark:focus-visible:ring-custom-400/50 fi-ac-action fi-ac-btn-action" style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);" type="submit">Import Records</button>')),
             ]);
     }
 
     public function validateDataFile(): bool
     {
-        
-        
+
         if ($this->import_type === 'controls') {
             $this->currentItems = Control::all();
+
             return $this->validateImplementationFile();
-        } else if ($this->import_type === 'implementations') {
+        } elseif ($this->import_type === 'implementations') {
             $this->currentItems = Implementation::all();
+
             return $this->validateImplementationFile();
         }
 
@@ -114,27 +124,28 @@ class Import extends Page
     public function validateImplementationFile(): bool
     {
         try {
-        $reader = Reader::createFromPath($this->data_file_path, 'r');
-        $reader->setHeaderOffset(0);
-        $headers = $reader->getHeader();
-        $normalizedHeaders = array_map(function ($header) {
-            return strtolower(trim($header));
-        }, $headers);
+            $reader = Reader::createFromPath($this->data_file_path, 'r');
+            $reader->setHeaderOffset(0);
+            $headers = $reader->getHeader();
+            $normalizedHeaders = array_map(function ($header) {
+                return strtolower(trim($header));
+            }, $headers);
 
-        $requiredHeaders = ['title'];
-        $missingHeaders = array_diff($requiredHeaders, $normalizedHeaders);
+            $requiredHeaders = ['title'];
+            $missingHeaders = array_diff($requiredHeaders, $normalizedHeaders);
 
-        if (! empty($missingHeaders)) {
-            $err = new HtmlString('Implementation File missing fields: '.implode(', ', $missingHeaders).'<br><br>Please correct your file and reupload');;
-            $this->addError('data_file', $err);
-    
-            return false;
-        } else {
-            $this->resetErrorBag('data_file');
-            $this->data_file_data = iterator_to_array($reader->getRecords());
-            $this->preProcessData();
-            return true;
-        }
+            if (! empty($missingHeaders)) {
+                $err = new HtmlString('Implementation File missing fields: '.implode(', ', $missingHeaders).'<br><br>Please correct your file and reupload');
+                $this->addError('data_file', $err);
+
+                return false;
+            } else {
+                $this->resetErrorBag('data_file');
+                $this->data_file_data = iterator_to_array($reader->getRecords());
+                $this->preProcessData();
+
+                return true;
+            }
 
         } catch (Exception $e) {
             $this->addError('data_file', 'Invalid file: '.$e->getMessage());
@@ -163,14 +174,14 @@ class Import extends Page
 
                 $finalRecord['code'] = $row['code'];
                 $finalRecord['title'] = $row['title'];
-                $finalRecord['details'] = $row['details'];                
+                $finalRecord['details'] = $row['details'];
                 $finalRecord['notes'] = $row['notes'];
                 $finalRecord['test_plan'] = $row['test plan'];
                 $finalRecord['owner'] = $row['owner'];
                 $finalRecord['map-control'] = $row['map-control'];
-                
+
                 $this->finalData[] = $finalRecord;
-                
+
             }
 
             if ($has_errors) {
@@ -179,17 +190,17 @@ class Import extends Page
                 $this->addError('data_file', $this->error_string);
 
                 return false;
-            }   
+            }
 
             return true;
         } catch (Exception $e) {
             $this->addError('data_file', 'Error pre-processing data: '.$e->getMessage());
-            
+
             Notification::make()
                 ->title('Error validating data: '.$e->getMessage())
                 ->danger()
                 ->send();
-                
+
             return false;
         }
     }
@@ -199,7 +210,7 @@ class Import extends Page
         foreach ($this->finalData as $row) {
 
             $owner = User::where('email', $row['owner'])->first();
-            
+
             if ($row['_ACTION'] == 'CREATE') {
 
                 if ($this->import_type === 'controls') {
@@ -211,7 +222,7 @@ class Import extends Page
                     $control->test_plan = $row['test_plan'];
                     $control->control_owner_id = $owner->id ?? null;
                     $control->save();
-                } else if ($this->import_type === 'implementations') {
+                } elseif ($this->import_type === 'implementations') {
                     $mappedControls = $this->getMappedControls($row['map-control']);
 
                     $implementation = new Implementation;
@@ -238,7 +249,7 @@ class Import extends Page
                     $control->test_plan = $row['test_plan'];
                     $control->implementation_owner_id = $row['owner'] ?? null;
                     $control->update();
-                } else if ($this->import_type === 'implementations') {
+                } elseif ($this->import_type === 'implementations') {
                     $mappedControls = $this->getMappedControls($row['map-control']);
 
                     $implementation = $this->currentItems->where('code', $row['code'])->first();
@@ -273,6 +284,7 @@ class Import extends Page
                 $controls[] = $control;
             }
         }
+
         return $controls;
     }
 
@@ -282,6 +294,4 @@ class Import extends Page
 
         ];
     }
-
-
 }

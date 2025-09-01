@@ -49,7 +49,7 @@ class ImplementationRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->label('Implementation Details')
                     ->required()
@@ -58,7 +58,7 @@ class ImplementationRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->label('Internal Notes')
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'These notes are for internal use only and will not be shared with auditors.')

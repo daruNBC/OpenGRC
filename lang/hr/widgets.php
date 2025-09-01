@@ -53,4 +53,4 @@ return [
     'intro' => [
         'title' => 'Dobrodošli na Nadzornu Ploču',
     ],
-]; 
+];

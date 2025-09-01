@@ -3,16 +3,15 @@
 namespace App\Providers;
 
 use App\Models\User;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\ServiceProvider;
 use Schema;
-use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $argv = $_SERVER['argv'] ?? [];
             if (isset($argv[1]) && (
-               $argv[1] === 'opengrc:install' 
+                $argv[1] === 'opengrc:install'
             || $argv[1] === 'opengrc:deploy'
             || $argv[1] === 'package:discover'
             || $argv[1] === 'filament:upgrade'
@@ -75,13 +74,13 @@ class AppServiceProvider extends ServiceProvider
                 if ($storageDriver === 's3') {
                     $s3Key = setting('storage.s3.key');
                     $s3Secret = setting('storage.s3.secret');
-                    
+
                     // Decrypt credentials if they exist and are encrypted
                     try {
-                        if (!empty($s3Key)) {                            
-                            $s3Key = Crypt::decryptString($s3Key);                        
+                        if (! empty($s3Key)) {
+                            $s3Key = Crypt::decryptString($s3Key);
                         }
-                        if (!empty($s3Secret)) {
+                        if (! empty($s3Secret)) {
                             $s3Secret = Crypt::decryptString($s3Secret);
                         }
                         config()->set('filesystems.disks.s3', array_merge(config('filesystems.disks.s3', []), [
@@ -94,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
                         ]));
                     } catch (\Exception $e) {
                         // If decryption fails, log it but don't expose the error
-                        \Log::error('Failed to decrypt S3 credentials: ' . $e->getMessage());
+                        \Log::error('Failed to decrypt S3 credentials: '.$e->getMessage());
                         // Fall back to local storage if S3 credentials can't be decrypted
                         $storageDriver = 'private';
                     }
@@ -119,7 +118,7 @@ class AppServiceProvider extends ServiceProvider
 
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
             $switch
-                ->locales(['en','es','fr','hr']); 
+                ->locales(['en', 'es', 'fr', 'hr']);
         });
 
         FilamentColor::register([

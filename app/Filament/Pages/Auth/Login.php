@@ -10,10 +10,10 @@ class Login extends BaseLogin
     public function authenticate(): ?LoginResponse
     {
         $result = parent::authenticate();
-        
+
         // Update last activity after successful login
         auth()->user()?->updateLastActivity();
-        
+
         return $result;
     }
-} 
+}

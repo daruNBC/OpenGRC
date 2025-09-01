@@ -64,7 +64,7 @@ class AuditItemRelationManager extends RelationManager
                             ->columnSpanFull()
                             ->disableToolbarButtons([
                                 'image',
-                                'attachFiles'
+                                'attachFiles',
                             ])
                             ->label('Auditor Notes'),
                     ]),

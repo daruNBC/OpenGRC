@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\ApplicationType;
 use App\Enums\ApplicationStatus;
+use App\Enums\ApplicationType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,4 +30,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('applications');
     }
-}; 
+};

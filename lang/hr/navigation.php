@@ -38,7 +38,7 @@ return [
             'ai' => 'Postavke UI',
             'report' => 'Postavke Izvještaja',
             'security' => 'Sigurnost',
-            'authentication' => 'Autentifikacija'
-        ]
+            'authentication' => 'Autentifikacija',
+        ],
     ],
-]; 
+];

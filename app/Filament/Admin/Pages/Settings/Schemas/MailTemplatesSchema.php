@@ -17,7 +17,7 @@ class MailTemplatesSchema
                 ->label('Password Reset Body')
                 ->disableToolbarButtons([
                     'image',
-                    'attachFiles'
+                    'attachFiles',
                 ])
                 ->columnSpanFull(),
             TextInput::make('mail.templates.new_account_subject')
@@ -27,7 +27,7 @@ class MailTemplatesSchema
                 ->label('New Account Body')
                 ->disableToolbarButtons([
                     'image',
-                    'attachFiles'
+                    'attachFiles',
                 ])
                 ->columnSpanFull(),
             TextInput::make('mail.templates.evidence_request_subject')
@@ -37,7 +37,7 @@ class MailTemplatesSchema
                 ->label('Evidence Request Body')
                 ->disableToolbarButtons([
                     'image',
-                    'attachFiles'
+                    'attachFiles',
                 ])
                 ->columnSpanFull(),
         ];

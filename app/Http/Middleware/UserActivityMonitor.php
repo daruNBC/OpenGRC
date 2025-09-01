@@ -6,12 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserActivityMonitor
 {
-    private function isLivewireRequest(Request $request): bool 
+    private function isLivewireRequest(Request $request): bool
     {
         return str_contains(strtolower($request->path()), 'livewire/update');
     }
@@ -38,8 +37,8 @@ class UserActivityMonitor
 
         // Get post-response auth state
         $isLoggedIn = Auth::check();
-        if ($isLoggedIn && !$this->isLivewireRequest($request)) {
-            //$this->updateLastActivity($userId);
+        if ($isLoggedIn && ! $this->isLivewireRequest($request)) {
+            // $this->updateLastActivity($userId);
             Auth::user()->updateLastActivity();
         }
 

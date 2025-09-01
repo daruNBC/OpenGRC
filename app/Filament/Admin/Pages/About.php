@@ -22,7 +22,9 @@ class About extends Page
     protected static ?string $navigationGroup = 'System';
 
     public array $version = [];
+
     public array $license = [];
+
     public array $sbom = [];
 
     public function mount(): void
@@ -35,9 +37,10 @@ class About extends Page
     public function downloadSbom()
     {
         $sbomPath = base_path('sbom.json');
-        
-        if (!file_exists($sbomPath)) {
+
+        if (! file_exists($sbomPath)) {
             $this->addError('sbom', 'SBOM file not found.');
+
             return;
         }
 
@@ -49,7 +52,7 @@ class About extends Page
     protected function getAppVersion(): array
     {
         $gitInfo = $this->getGitInfo();
-        
+
         return [
             'tag' => $gitInfo['tag'] ?? 'No tags found',
             'commit' => $gitInfo['commit'] ?? 'Unknown',
@@ -62,8 +65,8 @@ class About extends Page
     protected function getGitInfo(): array
     {
         $gitDir = base_path('.git');
-        
-        if (!is_dir($gitDir)) {
+
+        if (! is_dir($gitDir)) {
             return [
                 'display' => 'No Git repository',
                 'tag' => null,
@@ -75,7 +78,7 @@ class About extends Page
 
         // Try to read Git information directly from files first
         $gitInfo = $this->readGitFromFiles($gitDir);
-        
+
         // If file reading fails, try shell_exec as fallback
         if ($gitInfo['commit'] === 'Unknown') {
             $gitInfo = $this->readGitFromShell();
@@ -93,16 +96,16 @@ class About extends Page
 
         try {
             // Read current HEAD commit
-            $headFile = $gitDir . '/HEAD';
+            $headFile = $gitDir.'/HEAD';
             if (file_exists($headFile)) {
                 $headContent = trim(file_get_contents($headFile));
-                
+
                 if (str_starts_with($headContent, 'ref: ')) {
                     // HEAD points to a branch
                     $branchRef = substr($headContent, 5);
                     $branch = basename($branchRef);
-                    
-                    $refFile = $gitDir . '/' . $branchRef;
+
+                    $refFile = $gitDir.'/'.$branchRef;
                     if (file_exists($refFile)) {
                         $fullCommit = trim(file_get_contents($refFile));
                         $commit = substr($fullCommit, 0, 7);
@@ -115,22 +118,22 @@ class About extends Page
             }
 
             // Try to find tags
-            $tagsDir = $gitDir . '/refs/tags';
+            $tagsDir = $gitDir.'/refs/tags';
             if (is_dir($tagsDir)) {
                 $tags = [];
                 try {
                     $iterator = new RecursiveIteratorIterator(
                         new RecursiveDirectoryIterator($tagsDir, RecursiveDirectoryIterator::SKIP_DOTS)
                     );
-                    
+
                     foreach ($iterator as $file) {
                         if ($file->isFile()) {
-                            $tagName = str_replace($tagsDir . DIRECTORY_SEPARATOR, '', $file->getPathname());
+                            $tagName = str_replace($tagsDir.DIRECTORY_SEPARATOR, '', $file->getPathname());
                             $tags[] = $tagName;
                         }
                     }
-                    
-                    if (!empty($tags)) {
+
+                    if (! empty($tags)) {
                         // Sort tags and get the latest (this is a simple approach)
                         sort($tags);
                         $tag = end($tags);
@@ -165,9 +168,9 @@ class About extends Page
     protected function readGitFromShell(): array
     {
         $basePath = base_path();
-        
+
         // Test if shell_exec is available
-        if (!function_exists('shell_exec') || shell_exec('echo test') === null) {
+        if (! function_exists('shell_exec') || shell_exec('echo test') === null) {
             return [
                 'tag' => null,
                 'commit' => 'Shell exec disabled',
@@ -179,17 +182,17 @@ class About extends Page
 
         // Get current commit hash (short)
         $commitHash = trim((string) shell_exec("cd '$basePath' && git rev-parse --short HEAD 2>/dev/null"));
-        
+
         // Get current branch
         $branch = trim((string) shell_exec("cd '$basePath' && git rev-parse --abbrev-ref HEAD 2>/dev/null"));
-        
+
         // Get commit date
         $commitDate = trim((string) shell_exec("cd '$basePath' && git log -1 --format=%cd --date=short 2>/dev/null"));
-        
+
         // Get the latest tag
         $latestTag = trim((string) shell_exec("cd '$basePath' && git describe --tags --abbrev=0 2>/dev/null"));
         $latestTag = empty($latestTag) ? null : $latestTag;
-        
+
         // Determine display version
         if ($latestTag) {
             $display = $latestTag;
@@ -198,7 +201,7 @@ class About extends Page
         } else {
             $display = 'Development';
         }
-        
+
         return [
             'tag' => $latestTag,
             'commit' => $commitHash ?: 'Unknown',
@@ -221,8 +224,8 @@ class About extends Page
     protected function getSbomInfo(): array
     {
         $sbomPath = base_path('sbom.json');
-        
-        if (!file_exists($sbomPath)) {
+
+        if (! file_exists($sbomPath)) {
             return [
                 'exists' => false,
                 'size' => 0,
@@ -233,7 +236,7 @@ class About extends Page
 
         $fileSize = filesize($sbomPath);
         $modified = filemtime($sbomPath);
-        
+
         // Try to read basic SBOM info
         $format = 'Unknown';
         try {
@@ -241,7 +244,7 @@ class About extends Page
             if (isset($sbomContent['bomFormat'])) {
                 $format = $sbomContent['bomFormat'];
                 if (isset($sbomContent['specVersion'])) {
-                    $format .= ' v' . $sbomContent['specVersion'];
+                    $format .= ' v'.$sbomContent['specVersion'];
                 }
             }
         } catch (Exception $e) {
@@ -260,12 +263,12 @@ class About extends Page
     protected function formatBytes(int $size, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        
+
         for ($i = 0; $size > 1024 && $i < count($units) - 1; $i++) {
             $size /= 1024;
         }
-        
-        return round($size, $precision) . ' ' . $units[$i];
+
+        return round($size, $precision).' '.$units[$i];
     }
 
     protected function getOpenGRCLicenseText(): string

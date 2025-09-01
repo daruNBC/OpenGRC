@@ -100,7 +100,7 @@ class StandardResource extends Resource
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->maxLength(65535)
                     ->required()
@@ -119,9 +119,9 @@ class StandardResource extends Resource
             {
                 public function toHtml()
                 {
-                    return "<div class='fi-section-content p-6'>" . 
-                        __('standard.table.description') . 
-                        "</div>";
+                    return "<div class='fi-section-content p-6'>".
+                        __('standard.table.description').
+                        '</div>';
                 }
             })
             ->columns([
@@ -198,7 +198,7 @@ class StandardResource extends Resource
             ->emptyStateHeading(new HtmlString(__('standard.table.empty_state.heading')))
             ->emptyStateDescription(
                 new HtmlString(__('standard.table.empty_state.description', [
-                    'url' => route('filament.app.resources.standards.index')
+                    'url' => route('filament.app.resources.standards.index'),
                 ]))
             );
     }

@@ -41,7 +41,7 @@ class ControlsRelationManager extends RelationManager
                     ->required()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Describe the control in detail.')
                     ->columnSpanFull(),
@@ -49,7 +49,7 @@ class ControlsRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Provide any explanation, discussion, context, or relevant information to help someone understand the intent of this control.'),
             ]);

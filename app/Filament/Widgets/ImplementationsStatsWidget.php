@@ -33,7 +33,7 @@ class ImplementationsStatsWidget extends ChartWidget
                 __('widgets.implementations_stats.effective'),
                 __('widgets.implementations_stats.partially_effective'),
                 __('widgets.implementations_stats.ineffective'),
-                __('widgets.implementations_stats.not_assessed')
+                __('widgets.implementations_stats.not_assessed'),
             ],
             'datasets' => [
                 [

@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\ApplicationType;
 use App\Enums\ApplicationStatus;
+use App\Enums\ApplicationType;
 use App\Filament\Resources\ApplicationResource\Pages;
 use App\Models\Application;
-use App\Models\User;
-use App\Models\Vendor;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -57,7 +55,7 @@ class ApplicationResource extends Resource
                 Forms\Components\Select::make('type')
                     ->label(__('Type'))
                     ->enum(ApplicationType::class)
-                    ->options(collect(ApplicationType::cases())->mapWithKeys(fn($case) => [$case->value => $case->getLabel()]))
+                    ->options(collect(ApplicationType::cases())->mapWithKeys(fn ($case) => [$case->value => $case->getLabel()]))
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->label(__('Description'))
@@ -65,7 +63,7 @@ class ApplicationResource extends Resource
                 Forms\Components\Select::make('status')
                     ->label(__('Status'))
                     ->enum(ApplicationStatus::class)
-                    ->options(collect(ApplicationStatus::cases())->mapWithKeys(fn($case) => [$case->value => $case->getLabel()]))
+                    ->options(collect(ApplicationStatus::cases())->mapWithKeys(fn ($case) => [$case->value => $case->getLabel()]))
                     ->required(),
                 Forms\Components\TextInput::make('url')
                     ->label(__('URL'))
@@ -83,10 +81,10 @@ class ApplicationResource extends Resource
                     ->label(__('Logo'))
                     ->disk(config('filesystems.default'))
                     ->directory('application-logos')
-                    ->storeFileNamesIn('logo')                    
-                    ->visibility('private')                    
+                    ->storeFileNamesIn('logo')
+                    ->visibility('private')
                     ->maxSize(1024) // 1MB
-                    ->deletable()                    
+                    ->deletable()
                     ->deleteUploadedFileUsing(function ($state) {
                         if ($state) {
                             \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'))->delete($state);
@@ -101,15 +99,15 @@ class ApplicationResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label(__('Name'))->searchable(),
                 Tables\Columns\TextColumn::make('owner.name')->label(__('Owner'))->searchable(),
-                Tables\Columns\TextColumn::make('type')->label(__('Type'))->badge()->color(fn($record) => $record->type->getColor()),
+                Tables\Columns\TextColumn::make('type')->label(__('Type'))->badge()->color(fn ($record) => $record->type->getColor()),
                 Tables\Columns\TextColumn::make('vendor.name')->label(__('Vendor'))->searchable(),
-                Tables\Columns\TextColumn::make('status')->label(__('Status'))->badge()->color(fn($record) => $record->status->getColor()),
-                Tables\Columns\TextColumn::make('url')->label(__('URL'))->url(fn($record) => $record->url, true),
+                Tables\Columns\TextColumn::make('status')->label(__('Status'))->badge()->color(fn ($record) => $record->status->getColor()),
+                Tables\Columns\TextColumn::make('url')->label(__('URL'))->url(fn ($record) => $record->url, true),
                 Tables\Columns\TextColumn::make('created_at')->label(__('Created'))->dateTime()->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')->label(__('Updated'))->dateTime()->sortable(),
             ])
             ->filters([
-                
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -136,4 +134,4 @@ class ApplicationResource extends Resource
             'edit' => Pages\EditApplication::route('/{record}/edit'),
         ];
     }
-} 
+}

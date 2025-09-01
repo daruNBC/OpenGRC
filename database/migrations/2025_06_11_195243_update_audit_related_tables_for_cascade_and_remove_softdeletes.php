@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -50,7 +50,7 @@ return new class extends Migration
                   AND COLUMN_NAME = 'audit_id'
                   AND REFERENCED_TABLE_NAME = 'audits'
             ");
-            if (!empty($results)) {
+            if (! empty($results)) {
                 $fkName = $results[0]->CONSTRAINT_NAME;
             }
 

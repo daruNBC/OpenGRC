@@ -16,4 +16,4 @@ class ListApplications extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-} 
+}

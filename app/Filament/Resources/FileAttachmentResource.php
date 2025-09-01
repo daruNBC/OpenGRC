@@ -28,7 +28,7 @@ class FileAttachmentResource extends Resource
                 Forms\Components\RichEditor::make('description')
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->required()
                     ->columnSpanFull(),

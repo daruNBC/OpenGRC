@@ -83,4 +83,4 @@ return [
         'optional' => 'Optionnel',
         'other' => 'Autre',
     ],
-]; 
+];

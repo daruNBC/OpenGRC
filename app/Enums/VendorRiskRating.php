@@ -34,4 +34,4 @@ enum VendorRiskRating: string implements HasColor, HasLabel
             self::CRITICAL => 'danger',
         };
     }
-} 
+}

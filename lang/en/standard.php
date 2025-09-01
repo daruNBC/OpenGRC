@@ -74,4 +74,4 @@ return [
     'breadcrumb' => [
         'title' => 'Standards',
     ],
-]; 
+];

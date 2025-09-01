@@ -28,4 +28,4 @@ class ListVendors extends ListRecords
             Actions\ViewAction::make(),
         ];
     }
-} 
+}

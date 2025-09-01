@@ -11,12 +11,15 @@ class PermissionMatrix extends Field
     protected string $view = 'filament.pages.role-permission-matrix-table';
 
     protected Collection $matrixRoles;
+
     protected Collection $matrixPermissions;
+
     protected ?BaseCollection $groupedPermissions = null;
 
     public function roles(Collection $roles): static
     {
         $this->matrixRoles = $roles;
+
         return $this;
     }
 
@@ -24,6 +27,7 @@ class PermissionMatrix extends Field
     {
         $this->matrixPermissions = $permissions;
         $this->groupedPermissions = $permissions->groupBy('category')->sortKeys();
+
         return $this;
     }
 
@@ -41,4 +45,4 @@ class PermissionMatrix extends Field
     {
         return $this->groupedPermissions;
     }
-} 
+}

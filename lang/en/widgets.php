@@ -53,4 +53,4 @@ return [
     'intro' => [
         'title' => 'Welcome to the Dashboard',
     ],
-]; 
+];

@@ -31,4 +31,4 @@ enum ApplicationStatus: string implements HasColor, HasLabel
             self::EXPIRED => 'gray',
         };
     }
-} 
+}

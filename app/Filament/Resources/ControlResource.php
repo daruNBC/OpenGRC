@@ -126,14 +126,14 @@ class ControlResource extends Resource
             {
                 public function toHtml()
                 {
-                    return "<div class='fi-section-content p-6'>" . 
-                        __('control.table.description') . 
-                        "</div>";
+                    return "<div class='fi-section-content p-6'>".
+                        __('control.table.description').
+                        '</div>';
                 }
             })
             ->emptyStateHeading(__('control.table.empty_state.heading'))
             ->emptyStateDescription(new HtmlString(__('control.table.empty_state.description', [
-                'url' => route('filament.app.resources.controls.index')
+                'url' => route('filament.app.resources.controls.index'),
             ])))
             ->columns([
                 Tables\Columns\TextColumn::make('code')

@@ -34,4 +34,4 @@ enum ApplicationType: string implements HasColor, HasLabel
             self::OTHER => 'secondary',
         };
     }
-} 
+}

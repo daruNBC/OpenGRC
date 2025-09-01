@@ -17,7 +17,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 
@@ -51,7 +50,7 @@ class DataRequestResource extends Resource
                     ->helperText('Optional. If left blank, will default to Request-{id} after creation.')
                     ->nullable(),
                 Forms\Components\Select::make('created_by_id')
-                ->label('Created By')
+                    ->label('Created By')
                     ->options(User::pluck('name', 'id')->toArray())
                     ->default(auth()->id())
                     ->searchable()
@@ -64,7 +63,7 @@ class DataRequestResource extends Resource
                 Forms\Components\RichEditor::make('details')
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->required()
                     ->columnSpanFull(),
@@ -164,7 +163,7 @@ class DataRequestResource extends Resource
                             ->content(function ($record) {
                                 return new HtmlString($record->details ?? '');
                             }),
-                            // ->columnSpanFull(),
+                        // ->columnSpanFull(),
                         Placeholder::make('control')
                             ->label('Control')
                             // ->columnSpanFull()
@@ -222,7 +221,7 @@ class DataRequestResource extends Resource
                                             foreach ($record->attachments as $attachment) {
                                                 $storage = Storage::disk(config('filesystems.default'));
                                                 $downloadUrl = null;
-                                                
+
                                                 if ($storage->exists($attachment->file_path)) {
                                                     $driver = config('filesystems.default');
                                                     if (in_array($driver, ['s3', 'minio'])) {
@@ -231,7 +230,7 @@ class DataRequestResource extends Resource
                                                         $downloadUrl = $storage->url($attachment->file_path);
                                                     }
                                                 }
-                                                
+
                                                 $output .= "<tr>
                                                 <td class='px-6 py-4 whitespace-nowrap w-auto'>";
                                                 if ($downloadUrl) {

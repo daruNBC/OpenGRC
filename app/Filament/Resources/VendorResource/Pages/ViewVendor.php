@@ -16,4 +16,4 @@ class ViewVendor extends ViewRecord
             Actions\EditAction::make(),
         ];
     }
-} 
+}
