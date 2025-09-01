@@ -26,4 +26,4 @@ return [
         'pending_review' => 'Revisión Pendiente',
     ],
     'description' => 'Los programas sirven como marcos integrales que unen estándares y controles de seguridad en iniciativas cohesivas y manejables dentro de una organización. Representan enfoques estructurados para lograr objetivos específicos de seguridad al combinar estándares relevantes (que definen \'qué\' debe hacerse) con controles apropiados (que especifican \'cómo\' hacerlo). Cada programa típicamente aborda un área distinta de cumplimiento, gestión de riesgos o mejora de seguridad, facilitando el seguimiento del progreso, la medición de la efectividad y la garantía de responsabilidad. Por ejemplo, un Programa de Privacidad de Datos podría incorporar estándares de GDPR y CCPA, implementando controles específicos como cifrado de datos, gestión de accesos y auditorías regulares para cumplir con estos requisitos. Al organizar las medidas de seguridad en programas, las organizaciones pueden coordinar mejor sus esfuerzos de seguridad, asignar recursos de manera efectiva y mantener una supervisión clara de su postura de seguridad en diferentes dominios y objetivos.',
-]; 
+];

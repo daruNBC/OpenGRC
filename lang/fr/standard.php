@@ -48,4 +48,4 @@ return [
     'infolist' => [
         'section_title' => 'Détails du Standard',
     ],
-]; 
+];

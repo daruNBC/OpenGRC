@@ -38,7 +38,7 @@ return [
             'ai' => 'Paramètres IA',
             'report' => 'Paramètres de Rapport',
             'security' => 'Sécurité',
-            'authentication' => 'Authentification'
-        ]
+            'authentication' => 'Authentification',
+        ],
     ],
-]; 
+];

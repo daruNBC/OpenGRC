@@ -188,7 +188,7 @@ class Install extends Command
         exec('npm install && npm run build');
 
         // Set starter filesystem permissions.
-        if (PHP_OS=="Linux") {
+        if (PHP_OS == 'Linux') {
             $this->info('Setting filesystem permissions');
             exec('find . -type f -print0 | xargs --null sudo chmod 666');
             exec('find . -type d -print0 | xargs --null sudo chmod 775');

@@ -21,8 +21,6 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
-use Outerweb\FilamentSettings\Filament\Plugins\FilamentSettingsPlugin;
-
 
 class AppPanelProvider extends PanelProvider
 {
@@ -96,7 +94,7 @@ class AppPanelProvider extends PanelProvider
             ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->plugins([
-                FilamentApexChartsPlugin::make(),                
+                FilamentApexChartsPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: true,

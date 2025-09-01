@@ -2,26 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Program;
-use App\Models\Standard;
-use App\Models\Control;
-use App\Models\Implementation;
+use App\Enums\Applicability;
+use App\Enums\Effectiveness;
+use App\Enums\ResponseStatus;
+use App\Enums\WorkflowStatus;
 use App\Models\Audit;
 use App\Models\AuditItem;
-use App\Models\Risk;
+use App\Models\Control;
 use App\Models\DataRequest;
 use App\Models\DataRequestResponse;
+use App\Models\Implementation;
+use App\Models\Program;
+use App\Models\Risk;
+use App\Models\Standard;
+use App\Models\User;
+use Faker\Factory as FakerFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
-use Faker\Factory as FakerFactory;
-use Illuminate\Support\Facades\Crypt;
-use App\Enums\WorkflowStatus;
-use App\Enums\Effectiveness;
-use App\Enums\Applicability;
-use App\Enums\ResponseStatus;
 
 class FullDemoSeeder extends Seeder
 {
@@ -142,7 +140,7 @@ class FullDemoSeeder extends Seeder
                         : Arr::random([
                             WorkflowStatus::INPROGRESS->value,
                             WorkflowStatus::NOTSTARTED->value,
-                            WorkflowStatus::COMPLETED->value
+                            WorkflowStatus::COMPLETED->value,
                         ]),
                     'effectiveness' => Arr::random([
                         Effectiveness::EFFECTIVE->value,
@@ -198,4 +196,4 @@ class FullDemoSeeder extends Seeder
             $risks[] = $risk;
         }
     }
-} 
+}

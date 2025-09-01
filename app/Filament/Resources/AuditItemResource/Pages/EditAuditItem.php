@@ -58,8 +58,8 @@ class EditAuditItem extends EditRecord
                     $dataRequest->save();
 
                     // If code is still null after save, set to Request-{id}
-                    if (!$dataRequest->code) {
-                        $dataRequest->code = 'Request-' . $dataRequest->id;
+                    if (! $dataRequest->code) {
+                        $dataRequest->code = 'Request-'.$dataRequest->id;
                         $dataRequest->save();
                     }
 
@@ -170,7 +170,7 @@ class EditAuditItem extends EditRecord
                             ->maxLength(65535)
                             ->disableToolbarButtons([
                                 'image',
-                                'attachFiles'
+                                'attachFiles',
                             ])
                             ->label('Auditor Notes'),
                     ]),

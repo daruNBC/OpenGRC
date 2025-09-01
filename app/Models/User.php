@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -39,9 +39,8 @@ class User extends Authenticatable implements FilamentUser
      * @var array<int, string>
      */
     protected $guarded = [
-        'last_activity'
+        'last_activity',
     ];
-
 
     /**
      * The attributes that should be hidden for serialization.
@@ -95,7 +94,7 @@ class User extends Authenticatable implements FilamentUser
      * @return bool
      */
     public function updateLastActivity(): void
-    {       
+    {
         DB::table('users')
             ->where('id', $this->id)
             ->update(['last_activity' => now()]);

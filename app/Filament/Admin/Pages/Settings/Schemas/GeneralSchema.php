@@ -2,11 +2,11 @@
 
 namespace App\Filament\Admin\Pages\Settings\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -64,7 +64,7 @@ class GeneralSchema
                         ->label('Storage Driver')
                         ->options([
                             'private' => 'Local Private Storage',
-                            's3' => 'Amazon S3'
+                            's3' => 'Amazon S3',
                         ])
                         ->default('private')
                         ->required()

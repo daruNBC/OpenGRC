@@ -28,6 +28,3 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/audits/{audit}', [AuditController::class, 'destroy']);
 
 });
-
-
-

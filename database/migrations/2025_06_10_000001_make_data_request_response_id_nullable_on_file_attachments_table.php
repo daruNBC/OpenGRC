@@ -25,4 +25,4 @@ return new class extends Migration
             $table->foreignId('data_request_response_id')->nullable(false)->change();
         });
     }
-}; 
+};

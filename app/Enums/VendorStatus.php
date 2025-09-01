@@ -34,4 +34,4 @@ enum VendorStatus: string implements HasColor, HasLabel
             self::TERMINATED => 'danger',
         };
     }
-} 
+}

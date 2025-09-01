@@ -65,4 +65,4 @@ return [
         'section_title' => 'Detalles del Control',
         'test_plan' => 'Plan de Prueba',
     ],
-]; 
+];

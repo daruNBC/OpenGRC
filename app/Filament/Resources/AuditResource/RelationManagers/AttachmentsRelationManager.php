@@ -71,6 +71,7 @@ class AttachmentsRelationManager extends RelationManager
                     ->label('Uploaded By')
                     ->getStateUsing(function ($record) {
                         $user = User::find($record->uploaded_by);
+
                         return $user ? $user->name : 'Unknown';
                     }),
             ])
@@ -90,7 +91,7 @@ class AttachmentsRelationManager extends RelationManager
                             $pdf = Pdf::loadView($reportTemplate, ['audit' => $audit, 'auditItems' => $auditItems]);
 
                             return response()->streamDownload(
-                                fn () => print($pdf->stream()),
+                                fn () => print ($pdf->stream()),
                                 "DRAFT-AuditReport-{$audit->id}.pdf"
                             );
                         }),
@@ -101,7 +102,7 @@ class AttachmentsRelationManager extends RelationManager
                             $audit = $this->getOwnerRecord();
                             $filepath = "audit_reports/AuditReport-{$audit->id}.pdf";
                             $storage = Storage::disk(config('filesystems.default'));
-                            
+
                             if ($storage->exists($filepath)) {
                                 return response()->streamDownload(
                                     fn () => $storage->get($filepath),

@@ -45,4 +45,4 @@ class RolesRelationManager extends RelationManager
                     ->label('Remove Role from User'),
             ]);
     }
-} 
+}

@@ -92,7 +92,7 @@ class ImplementationResource extends Resource
                     ->required()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->maxLength(65535)
                     ->columnSpanFull()
@@ -102,7 +102,7 @@ class ImplementationResource extends Resource
                     ->maxLength(65535)
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->columnSpanFull()
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Any additional internal notes. This is never visible to an auditor.'),
@@ -126,9 +126,9 @@ class ImplementationResource extends Resource
             {
                 public function toHtml()
                 {
-                    return "<div class='fi-section-content p-6'>" . 
-                        __('implementation.table.description') . 
-                        "</div>";
+                    return "<div class='fi-section-content p-6'>".
+                        __('implementation.table.description').
+                        '</div>';
                 }
             })
             ->emptyStateHeading(__('implementation.table.empty_state.heading'))
@@ -315,7 +315,7 @@ class ImplementationResource extends Resource
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->label('Implementation Details')
                     ->required()
@@ -324,7 +324,7 @@ class ImplementationResource extends Resource
                     ->columnSpanFull()
                     ->disableToolbarButtons([
                         'image',
-                        'attachFiles'
+                        'attachFiles',
                     ])
                     ->label('Internal Notes')
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'These notes are for internal use only and will not be shared with auditors.')

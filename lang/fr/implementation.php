@@ -27,4 +27,4 @@ return [
     'actions' => [
         'create' => 'Créer une Implémentation',
     ],
-]; 
+];

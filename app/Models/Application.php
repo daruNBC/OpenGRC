@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enums\ApplicationType;
 use App\Enums\ApplicationStatus;
+use App\Enums\ApplicationType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,4 +38,4 @@ class Application extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
-} 
+}

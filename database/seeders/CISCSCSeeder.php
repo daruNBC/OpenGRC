@@ -27,7 +27,7 @@ class CISCSCSeeder extends Seeder
                 'authority' => 'Center for Internet Security (CIS)',
                 'status' => StandardStatus::IN_SCOPE,
                 'reference_url' => 'https://www.cisecurity.org/controls/cis-controls-list/',
-                'description' => 'CIS Controls IG1 are basic cyber hygiene and represent essential cyber defense readiness for all enterprises.'
+                'description' => 'CIS Controls IG1 are basic cyber hygiene and represent essential cyber defense readiness for all enterprises.',
             ],
             [
                 'name' => 'CIS Critical Security Controls Implementation Group 2 (IG2)',
@@ -35,7 +35,7 @@ class CISCSCSeeder extends Seeder
                 'authority' => 'Center for Internet Security (CIS)',
                 'status' => StandardStatus::IN_SCOPE,
                 'reference_url' => 'https://www.cisecurity.org/controls/cis-controls-list/',
-                'description' => 'CIS Controls IG2 build upon IG1 and are for enterprises with sensitive client or operational information, requiring additional security.'
+                'description' => 'CIS Controls IG2 build upon IG1 and are for enterprises with sensitive client or operational information, requiring additional security.',
             ],
             [
                 'name' => 'CIS Critical Security Controls Implementation Group 3 (IG3)',
@@ -43,7 +43,7 @@ class CISCSCSeeder extends Seeder
                 'authority' => 'Center for Internet Security (CIS)',
                 'status' => StandardStatus::IN_SCOPE,
                 'reference_url' => 'https://www.cisecurity.org/controls/cis-controls-list/',
-                'description' => 'CIS Controls IG3 are for enterprises with critical infrastructure or assets, requiring the most comprehensive security measures.'
+                'description' => 'CIS Controls IG3 are for enterprises with critical infrastructure or assets, requiring the most comprehensive security measures.',
             ],
         ];
 
@@ -63,7 +63,7 @@ class CISCSCSeeder extends Seeder
         $records = (new Statement)->process($csv);
 
         foreach ($records as $record) {
-            $code = 'CIS-CSC-' . $record['Code'];
+            $code = 'CIS-CSC-'.$record['Code'];
             $title = $record['Title'];
             $description = $record['Description'];
             $type = ControlType::OTHER;
@@ -95,4 +95,4 @@ class CISCSCSeeder extends Seeder
             }
         }
     }
-} 
+}

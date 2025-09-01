@@ -4,17 +4,14 @@ namespace App\Filament\Resources\AuditResource\RelationManagers;
 
 use App\Enums\WorkflowStatus;
 use App\Filament\Resources\DataRequestResource;
+use App\Http\Controllers\QueueController;
 use App\Models\DataRequest;
-use App\Models\Audit;
-use Symfony\Component\Process\Process;
-use Filament\Notifications\Notification;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\QueueController;
 
 class DataRequestsRelationManager extends RelationManager
 {
@@ -98,15 +95,15 @@ class DataRequestsRelationManager extends RelationManager
                     ->action(function ($livewire) {
                         $audit = $this->getOwnerRecord();
                         \App\Jobs\ExportAuditEvidenceJob::dispatch($audit->id);
-                        
+
                         // Ensure queue worker is running
-                        $queueController = new QueueController();
+                        $queueController = new QueueController;
                         $wasAlreadyRunning = $queueController->ensureQueueWorkerRunning();
-                        
-                        $body = $wasAlreadyRunning 
+
+                        $body = $wasAlreadyRunning
                             ? 'The export job has been added to the queue. You will be able to download the ZIP in the Attachments section.'
                             : 'The export job has been queued and a queue worker has been started. You will be able to download the ZIP in the Attachments section.';
-                        
+
                         return Notification::make()
                             ->title('Export Started')
                             ->body($body)

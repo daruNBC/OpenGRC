@@ -1,11 +1,8 @@
 <?php
 
 use App\Livewire\PasswordResetPage;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {

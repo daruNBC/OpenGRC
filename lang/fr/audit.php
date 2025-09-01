@@ -32,4 +32,4 @@ return [
     'actions' => [
         'create' => 'Créer un Audit',
     ],
-]; 
+];

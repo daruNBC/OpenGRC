@@ -53,4 +53,4 @@ return [
     'intro' => [
         'title' => 'Bienvenue sur le Tableau de Bord',
     ],
-]; 
+];

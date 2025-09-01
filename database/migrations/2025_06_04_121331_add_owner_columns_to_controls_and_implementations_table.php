@@ -29,10 +29,10 @@ return new class extends Migration
         Schema::table('controls', function (Blueprint $table) {
             $table->dropForeign(['control_owner_id']);
             $table->dropColumn('control_owner_id');
-         });
+        });
         Schema::table('implementations', function (Blueprint $table) {
             $table->dropForeign(['implementation_owner_id']);
             $table->dropColumn('implementation_owner_id');
         });
     }
-}; 
+};

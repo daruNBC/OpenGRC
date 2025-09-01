@@ -53,4 +53,4 @@ return [
     'intro' => [
         'title' => 'Bienvenido al Panel de Control',
     ],
-]; 
+];

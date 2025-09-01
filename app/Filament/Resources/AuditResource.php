@@ -211,7 +211,7 @@ class AuditResource extends Resource
         $filepath = "audit_reports/AuditReport-{$audit->id}.pdf";
         $pdf = Pdf::loadView($reportTemplate, ['audit' => $audit, 'auditItems' => $auditItems]);
         Storage::disk(config('filesystems.default'))->put($filepath, $pdf->output(), [
-            'visibility' => 'private'
+            'visibility' => 'private',
         ]);
 
         // Mark the audit as completed

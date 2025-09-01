@@ -49,7 +49,7 @@ class ControlsStatsWidget extends ChartWidget
                 __('widgets.controls_stats.effective'),
                 __('widgets.controls_stats.partially_effective'),
                 __('widgets.controls_stats.ineffective'),
-                __('widgets.controls_stats.not_assessed')
+                __('widgets.controls_stats.not_assessed'),
             ],
             'datasets' => [
                 [

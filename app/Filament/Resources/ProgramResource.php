@@ -78,7 +78,7 @@ class ProgramResource extends Resource
             {
                 public function toHtml()
                 {
-                    return "<div class='fi-section-content p-6'>" . __('programs.description') . "</div>";
+                    return "<div class='fi-section-content p-6'>".__('programs.description').'</div>';
                 }
             })
             ->columns([

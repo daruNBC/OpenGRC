@@ -4,6 +4,7 @@ namespace App\Filament\Resources\AuditResource\Pages;
 
 use App\Enums\WorkflowStatus;
 use App\Filament\Resources\AuditResource;
+use App\Http\Controllers\QueueController;
 use App\Models\Audit;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions;
@@ -13,7 +14,6 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Enums\ActionSize;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Controllers\QueueController;
 
 class ViewAudit extends ViewRecord
 {
@@ -147,15 +147,15 @@ class ViewAudit extends ViewRecord
                     ->modalDescription('This will generate a PDF for each audit item and zip them for download. You will be notified when the export is ready.')
                     ->action(function (Audit $audit, $livewire) {
                         \App\Jobs\ExportAuditEvidenceJob::dispatch($audit->id);
-                        
+
                         // Ensure queue worker is running
-                        $queueController = new QueueController();
+                        $queueController = new QueueController;
                         $wasAlreadyRunning = $queueController->ensureQueueWorkerRunning();
-                        
-                        $body = $wasAlreadyRunning 
+
+                        $body = $wasAlreadyRunning
                             ? 'The export job has been added to the queue. You will be able to download the ZIP in the Attachments section.'
                             : 'The export job has been queued and a queue worker has been started. You will be able to download the ZIP in the Attachments section.';
-                        
+
                         return Notification::make()
                             ->title('Export Started')
                             ->body($body)
@@ -182,6 +182,7 @@ class ViewAudit extends ViewRecord
                             $storage = Storage::disk(config('filesystems.default'));
                             if ($storage->exists($filepath)) {
                                 $fileContents = $storage->get($filepath);
+
                                 return response()->streamDownload(
                                     function () use ($fileContents) {
                                         echo $fileContents;
@@ -203,6 +204,7 @@ class ViewAudit extends ViewRecord
                                 $reportTemplate = 'reports.implementation-report';
                             }
                             $pdf = Pdf::loadView($reportTemplate, ['audit' => $audit, 'auditItems' => $auditItems]);
+
                             return response()->streamDownload(
                                 function () use ($pdf) {
                                     echo $pdf->output();

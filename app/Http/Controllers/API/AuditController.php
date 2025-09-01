@@ -27,7 +27,7 @@ class AuditController extends Controller
     {
         $data = $request->validated();
 
-        $data['slug'] = Str::slug($request->name);        
+        $data['slug'] = Str::slug($request->name);
         $product = Audit::create($data);
 
         return response()->json($product, JsonResponse::HTTP_CREATED);
@@ -41,6 +41,7 @@ class AuditController extends Controller
      * @group Audit
      *
      * @urlParam audit int required The ID of the audit. Example: 1
+     *
      * @queryParam with_details boolean Return all related audit items, controls, implementations, data requests, and responses. Example: true
      *
      * @response scenario=basic {"id": 1, "title": "Q2 Audit", ...}
@@ -56,6 +57,7 @@ class AuditController extends Controller
                 'dataRequest.responses',
             ]);
         }
+
         return response()->json($audit, JsonResponse::HTTP_OK);
     }
 
@@ -79,6 +81,7 @@ class AuditController extends Controller
     public function destroy(Audit $audit)
     {
         $audit->delete();
+
         return response()->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

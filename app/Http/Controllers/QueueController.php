@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 
@@ -16,22 +15,23 @@ class QueueController extends Controller
         // Check for running queue worker processes using ps command (more reliable)
         $process = new Process(['ps', 'aux']);
         $process->run();
-        
-        if (!$process->isSuccessful()) {
+
+        if (! $process->isSuccessful()) {
             return false;
         }
-        
+
         $output = $process->getOutput();
-        
+
         // Look for queue:work processes that are not defunct
         $lines = explode("\n", $output);
         foreach ($lines as $line) {
             if (strpos($line, 'queue:work') !== false && strpos($line, '<defunct>') === false) {
                 Log::info('Found running queue worker', ['process_line' => $line]);
+
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -46,13 +46,13 @@ class QueueController extends Controller
             PHP_BINARY,
             base_path('artisan')
         );
-        
+
         // Execute the command in the background
         exec($command);
-        
+
         Log::info('Queue worker started in background', [
             'command' => $command,
-            'timestamp' => now()
+            'timestamp' => now(),
         ]);
     }
 
@@ -61,11 +61,12 @@ class QueueController extends Controller
      */
     public function ensureQueueWorkerRunning(): bool
     {
-        if (!$this->isQueueWorkerRunning()) {
+        if (! $this->isQueueWorkerRunning()) {
             $this->startQueueWorker();
+
             return false; // Worker was not running, started a new one
         }
-        
+
         return true; // Worker was already running
     }
 
@@ -75,7 +76,7 @@ class QueueController extends Controller
     public function getQueueWorkerStatus(): array
     {
         $isRunning = $this->isQueueWorkerRunning();
-        
+
         return [
             'is_running' => $isRunning,
             'status' => $isRunning ? 'running' : 'stopped',
@@ -91,11 +92,11 @@ class QueueController extends Controller
         // Find and kill queue worker processes
         $process = new Process(['pkill', '-f', 'queue:work']);
         $process->run();
-        
+
         Log::info('Queue workers stop command executed', [
             'success' => $process->isSuccessful(),
             'output' => $process->getOutput(),
-            'timestamp' => now()
+            'timestamp' => now(),
         ]);
     }
 }

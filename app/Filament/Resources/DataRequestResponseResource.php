@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Enums\ResponseStatus;
 use App\Filament\Resources\DataRequestResponseResource\Pages;
 use App\Models\DataRequestResponse;
-use Carbon\Carbon;
 use Exception;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -22,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Log;
 
 class DataRequestResponseResource extends Resource
 {
@@ -34,7 +32,7 @@ class DataRequestResponseResource extends Resource
 
     public static function form(Form $form): Form
     {
-    //    dd(config(key: 'filesystems'));
+        //    dd(config(key: 'filesystems'));
 
         return $form
             ->schema([
@@ -67,7 +65,7 @@ class DataRequestResponseResource extends Resource
                             ->maxLength(65535)
                             ->disableToolbarButtons([
                                 'image',
-                                'attachFiles'
+                                'attachFiles',
                             ])
                             ->required(function ($get, $record) {
                                 if (is_null($record)) {
@@ -102,7 +100,8 @@ class DataRequestResponseResource extends Resource
                                     ->maxSize(10240) // 10MB max
                                     ->getUploadedFileNameForStorageUsing(function ($file) {
                                         $random = Str::random(8);
-                                        return $random . '-' . $file->getClientOriginalName();
+
+                                        return $random.'-'.$file->getClientOriginalName();
                                     })
                                     ->deleteUploadedFileUsing(function ($state) {
                                         if ($state) {
