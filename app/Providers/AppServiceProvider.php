@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $argv = $_SERVER['argv'] ?? [];
             if (isset($argv[1]) && (
                $argv[1] === 'opengrc:install' 
+            || $argv[1] === 'opengrc:deploy'
             || $argv[1] === 'package:discover'
             || $argv[1] === 'filament:upgrade'
             || $argv[1] === 'vendor:publish'
