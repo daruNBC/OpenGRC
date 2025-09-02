@@ -49,11 +49,24 @@ git pull
 
 ## Run Composer
 echo "Installing Composer Dependencies..."
-  composer update
+composer update
 
 ## Migrate the database
 echo "Migrating the database..."
 php artisan migrate
+
+## Clear Caches
+echo "Clear Caches"
+php artisan cache:clear
+
+# Check and create storage symlink if needed
+echo "Checking storage symlink..."
+if [ ! -L "public/storage" ]; then
+    echo "Creating storage symlink..."
+    php artisan storage:link
+else
+    echo "Storage symlink already exists"
+fi
 
 # Build the Frontend
 echo "Building the frontend dependencies..."
