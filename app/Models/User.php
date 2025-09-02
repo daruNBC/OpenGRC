@@ -91,7 +91,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Update the user's last activity timestamp.
      *
-     * @return bool
+     * @return void
      */
     public function updateLastActivity(): void
     {
