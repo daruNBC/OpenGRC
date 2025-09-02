@@ -143,6 +143,7 @@ class ImplementationResource extends Resource
                     ->label(__('implementation.table.columns.title'))
                     ->toggleable()
                     ->sortable()
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('effectiveness')
                     ->label(__('implementation.table.columns.effectiveness'))
