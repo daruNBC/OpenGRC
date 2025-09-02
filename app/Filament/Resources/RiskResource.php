@@ -35,7 +35,7 @@ class RiskResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('code')
                     ->label('Code')
-                    ->unique('risks', 'code')
+                    ->unique('risks', 'code', ignoreRecord: true)
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\TextInput::make('name')
@@ -183,7 +183,7 @@ class RiskResource extends Resource
         return [
             'index' => Pages\ListRisks::route('/'),
             'create' => Pages\CreateRisk::route('/create'),
-            //            'edit' => Pages\EditRisk::route('/{record}/edit'),
+            // 'edit' => Pages\EditRisk::route('/{record}/edit'),
             'view' => Pages\ViewRisk::route('/{record}'),
         ];
     }
