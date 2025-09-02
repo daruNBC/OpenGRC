@@ -253,11 +253,11 @@ class GeneralSchema
             $disk->delete($testFileName);
             
             // Verify cleanup
-            if ($disk->exists($testFileName)) {
-                \Log::warning("Test file still exists after deletion attempt");
-            } else {
-                \Log::info("S3 cleanup test successful");
-            }
+            // if ($disk->exists($testFileName)) {
+            //     \Log::warning("Test file still exists after deletion attempt");
+            // } else {
+            //     \Log::info("S3 cleanup test successful");
+            // }
 
         } catch (\Exception $e) {
             // Try to clean up test file if it was created
