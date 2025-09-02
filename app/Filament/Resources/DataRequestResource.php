@@ -37,11 +37,11 @@ class DataRequestResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Assigned To')
-                    ->options(User::pluck('name', 'id')->toArray())
+                    ->options(User::whereNotNull('name')->pluck('name', 'id')->toArray())
                     ->searchable(),
                 Forms\Components\Select::make('audit_item_id')
                     ->label('Audit name')
-                    ->options(Audit::pluck('title', 'id')->toArray())
+                    ->options(Audit::whereNotNull('title')->pluck('title', 'id')->toArray())
                     ->searchable()
                     ->required(),
                 Forms\Components\TextInput::make('code')
@@ -51,7 +51,7 @@ class DataRequestResource extends Resource
                     ->nullable(),
                 Forms\Components\Select::make('created_by_id')
                     ->label('Created By')
-                    ->options(User::pluck('name', 'id')->toArray())
+                    ->options(User::whereNotNull('name')->pluck('name', 'id')->toArray())
                     ->default(auth()->id())
                     ->searchable()
                     ->required(),
@@ -188,7 +188,8 @@ class DataRequestResource extends Resource
                             ->schema([
                                 Select::make('requestee_id')
                                     ->label('Assigned To')
-                                    ->relationship('requestee', 'name')
+                                    ->relationship('requestee', 'name', fn ($query) => $query->whereNotNull('name'))
+                                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->name ?? 'No Name')
                                     ->required(),
                                 ToggleButtons::make('status')
                                     ->label('Status')

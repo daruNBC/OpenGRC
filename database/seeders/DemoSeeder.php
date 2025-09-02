@@ -299,6 +299,7 @@ class DemoSeeder extends Seeder
 
             // Create a data request and a data request response for each control.
             $dataRequest = \App\Models\DataRequest::create([
+                'code' => 'DR-' . $ctl->code . '-001',
                 'created_by_id' => 1,
                 'assigned_to_id' => rand(1, 10),
                 'audit_id' => $audit->id,

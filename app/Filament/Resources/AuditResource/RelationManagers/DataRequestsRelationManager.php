@@ -57,10 +57,16 @@ class DataRequestsRelationManager extends RelationManager
                     ->options(WorkflowStatus::class)
                     ->label('Status'),
                 Tables\Filters\SelectFilter::make('assigned_to_id')
-                    ->options(DataRequest::pluck('assigned_to_id', 'assigned_to_id')->toArray())
+                    ->options(
+                        DataRequest::with('assignedTo')
+                            ->get()
+                            ->filter(fn($dr) => $dr->assignedTo && $dr->assignedTo->name)
+                            ->pluck('assignedTo.name', 'assigned_to_id')
+                            ->toArray()
+                    )
                     ->label('Assigned To'),
                 Tables\Filters\SelectFilter::make('code')
-                    ->options(DataRequest::pluck('code', 'code')->toArray())
+                    ->options(DataRequest::whereNotNull('code')->pluck('code', 'code')->toArray())
                     ->label('Request Code'),
             ])
             ->headerActions([
