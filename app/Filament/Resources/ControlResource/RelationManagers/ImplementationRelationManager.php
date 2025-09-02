@@ -108,6 +108,7 @@ class ImplementationRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 //                    ->url(fn ($record) => route('filament.app.resources.implementations.view', $record)),
             ])
             ->bulkActions([
