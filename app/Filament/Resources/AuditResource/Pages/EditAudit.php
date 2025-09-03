@@ -64,6 +64,12 @@ class EditAudit extends EditRecord
                         DatePicker::make('end_date')
                             ->default(now()->addDays(30))
                             ->required(),
+                        AuditResource::taxonomySelect('Department')
+                            ->nullable()
+                            ->columnSpan(1),
+                        AuditResource::taxonomySelect('Scope')
+                            ->nullable()
+                            ->columnSpan(1),
                     ]),
             ]);
     }

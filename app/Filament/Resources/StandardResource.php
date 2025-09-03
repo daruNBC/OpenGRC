@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\StandardStatus;
+use App\Filament\Concerns\HasTaxonomyFields;
 use App\Filament\Resources\StandardResource\Pages;
 use App\Filament\Resources\StandardResource\RelationManagers;
 use App\Models\Standard;
@@ -25,6 +26,8 @@ use Illuminate\Support\HtmlString;
 
 class StandardResource extends Resource
 {
+    use HasTaxonomyFields;
+    
     protected static ?string $model = Standard::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -106,6 +109,12 @@ class StandardResource extends Resource
                     ->required()
                     ->hint(__('standard.form.description.hint'))
                     ->placeholder(__('standard.form.description.placeholder')),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
             ]);
     }
 
@@ -241,6 +250,26 @@ class StandardResource extends Resource
                         TextEntry::make('code'),
                         TextEntry::make('authority'),
                         TextEntry::make('status'),
+                        TextEntry::make('taxonomies')
+                            ->label('Department')
+                            ->formatStateUsing(function (Standard $record) {
+                                $department = $record->taxonomies()
+                                    ->whereHas('parent', function ($query) {
+                                        $query->where('name', 'Department');
+                                    })
+                                    ->first();
+                                return $department?->name ?? 'Not assigned';
+                            }),
+                        TextEntry::make('taxonomies')
+                            ->label('Scope')
+                            ->formatStateUsing(function (Standard $record) {
+                                $scope = $record->taxonomies()
+                                    ->whereHas('parent', function ($query) {
+                                        $query->where('name', 'Scope');
+                                    })
+                                    ->first();
+                                return $scope?->name ?? 'Not assigned';
+                            }),
                         TextEntry::make('description')
                             ->columnSpanFull()
                             ->html(),

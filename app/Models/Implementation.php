@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Aliziodev\LaravelTaxonomy\Traits\HasTaxonomy;
 use App\Enums\Effectiveness;
 use App\Enums\ImplementationStatus;
 use Eloquent;
@@ -51,7 +52,7 @@ use Illuminate\Support\Carbon;
  */
 class Implementation extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTaxonomy;
 
     /**
      * Indicates if the model should be indexed as you type.
@@ -151,4 +152,5 @@ class Implementation extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'implementation_owner_id');
     }
+
 }

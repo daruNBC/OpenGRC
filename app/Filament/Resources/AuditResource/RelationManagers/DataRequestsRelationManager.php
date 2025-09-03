@@ -60,7 +60,7 @@ class DataRequestsRelationManager extends RelationManager
                     ->options(
                         DataRequest::with('assignedTo')
                             ->get()
-                            ->filter(fn($dr) => $dr->assignedTo && $dr->assignedTo->name)
+                            ->filter(fn ($dr) => $dr->assignedTo && $dr->assignedTo->name)
                             ->pluck('assignedTo.name', 'assigned_to_id')
                             ->toArray()
                     )
