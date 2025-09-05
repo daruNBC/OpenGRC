@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
 class AuditResource extends Resource
 {
     use HasTaxonomyFields, HasWizard;
-    
+
     protected static ?string $model = Audit::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
@@ -93,6 +93,7 @@ class AuditResource extends Resource
                                 $query->where('name', 'Department');
                             })
                             ->first();
+
                         return $department?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -106,6 +107,7 @@ class AuditResource extends Resource
                                 $query->where('name', 'Scope');
                             })
                             ->first();
+
                         return $scope?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -138,21 +140,21 @@ class AuditResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -163,21 +165,21 @@ class AuditResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -222,6 +224,7 @@ class AuditResource extends Resource
                                         $query->where('name', 'Department');
                                     })
                                     ->first();
+
                                 return $department?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('taxonomies')
@@ -232,6 +235,7 @@ class AuditResource extends Resource
                                         $query->where('name', 'Scope');
                                     })
                                     ->first();
+
                                 return $scope?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('description')

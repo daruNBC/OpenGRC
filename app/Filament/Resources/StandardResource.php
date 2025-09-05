@@ -27,7 +27,7 @@ use Illuminate\Support\HtmlString;
 class StandardResource extends Resource
 {
     use HasTaxonomyFields;
-    
+
     protected static ?string $model = Standard::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -93,8 +93,14 @@ class StandardResource extends Resource
                     ->options(StandardStatus::class)
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('standard.form.status.tooltip'))
                     ->native(false),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
                 TextInput::make('reference_url')
-                    ->columnSpanFull()
+                    ->columnSpan(1)
                     ->maxLength(255)
                     ->url()
                     ->placeholder(__('standard.form.reference_url.placeholder'))
@@ -109,12 +115,6 @@ class StandardResource extends Resource
                     ->required()
                     ->hint(__('standard.form.description.hint'))
                     ->placeholder(__('standard.form.description.placeholder')),
-                self::taxonomySelect('Department')
-                    ->nullable()
-                    ->columnSpan(1),
-                self::taxonomySelect('Scope')
-                    ->nullable()
-                    ->columnSpan(1),
             ]);
     }
 
@@ -258,6 +258,7 @@ class StandardResource extends Resource
                                         $query->where('name', 'Department');
                                     })
                                     ->first();
+
                                 return $department?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('taxonomies')
@@ -268,6 +269,7 @@ class StandardResource extends Resource
                                         $query->where('name', 'Scope');
                                     })
                                     ->first();
+
                                 return $scope?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('description')

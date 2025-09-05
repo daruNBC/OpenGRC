@@ -32,7 +32,7 @@ use Illuminate\Support\HtmlString;
 class ControlResource extends Resource
 {
     use HasTaxonomyFields;
-    
+
     protected static ?string $model = Control::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-stop-circle';
@@ -95,6 +95,18 @@ class ControlResource extends Resource
                     ->maxLength(1024)
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('control.form.title.tooltip'))
                     ->maxLength(1024),
+                Forms\Components\Select::make('control_owner_id')
+                    ->label('Control Owner')
+                    ->options(User::pluck('name', 'id')->toArray())
+                    ->searchable()
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
                 TinyEditor::make('description')
                     ->required()
                     ->maxLength(65535)
@@ -110,18 +122,6 @@ class ControlResource extends Resource
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('control.form.test.tooltip'))
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Select::make('control_owner_id')
-                    ->label('Control Owner')
-                    ->options(User::pluck('name', 'id')->toArray())
-                    ->searchable()
-                    ->nullable()
-                    ->columnSpan(1),
-                self::taxonomySelect('Department')
-                    ->nullable()
-                    ->columnSpan(1),
-                self::taxonomySelect('Scope')
-                    ->nullable()
-                    ->columnSpan(1),
             ]);
     }
 
@@ -197,6 +197,7 @@ class ControlResource extends Resource
                                 $query->where('name', 'Department');
                             })
                             ->first();
+
                         return $department?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -210,6 +211,7 @@ class ControlResource extends Resource
                                 $query->where('name', 'Scope');
                             })
                             ->first();
+
                         return $scope?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -255,21 +257,21 @@ class ControlResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -280,21 +282,21 @@ class ControlResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -363,6 +365,7 @@ class ControlResource extends Resource
                                         $query->where('name', 'Department');
                                     })
                                     ->first();
+
                                 return $department?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('taxonomies')
@@ -373,6 +376,7 @@ class ControlResource extends Resource
                                         $query->where('name', 'Scope');
                                     })
                                     ->first();
+
                                 return $scope?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('description')

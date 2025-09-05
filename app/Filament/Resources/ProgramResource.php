@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 class ProgramResource extends Resource
 {
     use HasTaxonomyFields;
-    
+
     protected static ?string $model = Program::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
@@ -112,6 +112,7 @@ class ProgramResource extends Resource
                                 $query->where('name', 'Department');
                             })
                             ->first();
+
                         return $department?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -125,6 +126,7 @@ class ProgramResource extends Resource
                                 $query->where('name', 'Scope');
                             })
                             ->first();
+
                         return $scope?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -148,21 +150,21 @@ class ProgramResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -173,21 +175,21 @@ class ProgramResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });

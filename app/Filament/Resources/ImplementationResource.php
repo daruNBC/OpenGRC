@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ImplementationResource extends Resource
 {
     use HasTaxonomyFields;
-    
+
     protected static ?string $model = Implementation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
@@ -91,6 +91,18 @@ class ImplementationResource extends Resource
                     ->required()
                     ->columnSpanFull()
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Enter a title for this implementation.'),
+                Forms\Components\Select::make('implementation_owner_id')
+                    ->label('Owner')
+                    ->options(User::pluck('name', 'id')->toArray())
+                    ->searchable()
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
                 Forms\Components\RichEditor::make('details')
                     ->required()
                     ->disableToolbarButtons([
@@ -109,19 +121,6 @@ class ImplementationResource extends Resource
                     ])
                     ->columnSpanFull()
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: 'Any additional internal notes. This is never visible to an auditor.'),
-
-                Forms\Components\Select::make('implementation_owner_id')
-                    ->label('Owner')
-                    ->options(User::pluck('name', 'id')->toArray())
-                    ->searchable()
-                    ->nullable()
-                    ->columnSpan(1),
-                self::taxonomySelect('Department')
-                    ->nullable()
-                    ->columnSpan(1),
-                self::taxonomySelect('Scope')
-                    ->nullable()
-                    ->columnSpan(1),
             ]);
     }
 
@@ -182,6 +181,7 @@ class ImplementationResource extends Resource
                                 $query->where('name', 'Department');
                             })
                             ->first();
+
                         return $department?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -195,6 +195,7 @@ class ImplementationResource extends Resource
                                 $query->where('name', 'Scope');
                             })
                             ->first();
+
                         return $scope?->name ?? 'Not assigned';
                     })
                     ->sortable()
@@ -233,21 +234,21 @@ class ImplementationResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -258,21 +259,21 @@ class ImplementationResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -313,6 +314,7 @@ class ImplementationResource extends Resource
                                         $query->where('name', 'Department');
                                     })
                                     ->first();
+
                                 return $department?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('taxonomies')
@@ -323,6 +325,7 @@ class ImplementationResource extends Resource
                                         $query->where('name', 'Scope');
                                     })
                                     ->first();
+
                                 return $scope?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('details')
@@ -500,21 +503,21 @@ class ImplementationResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });
@@ -525,21 +528,21 @@ class ImplementationResource extends Resource
                         $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
                             ->whereNull('parent_id')
                             ->first();
-                        
-                        if (!$taxonomy) {
+
+                        if (! $taxonomy) {
                             return [];
                         }
-                        
+
                         return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
                             ->orderBy('name')
                             ->pluck('name', 'id')
                             ->toArray();
                     })
                     ->query(function ($query, array $data) {
-                        if (!$data['value']) {
+                        if (! $data['value']) {
                             return;
                         }
-                        
+
                         $query->whereHas('taxonomies', function ($query) use ($data) {
                             $query->where('taxonomy_id', $data['value']);
                         });

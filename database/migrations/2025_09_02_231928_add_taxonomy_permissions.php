@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Aliziodev\LaravelTaxonomy\Models\Taxonomy;
 
 return new class extends Migration
 {
@@ -59,6 +60,51 @@ return new class extends Migration
                 'Read Taxonomy',
             ]);
         }
+
+        // Create Taxonomy terms
+        $this->createTaxonomyTerms();
+    }
+
+    /**
+     * Create taxonomy terms
+     */
+    private function createTaxonomyTerms(): void
+    {
+        // Create Scope taxonomy with Global term
+        $scopeTaxonomy = Taxonomy::firstOrCreate([
+            'name' => 'Scope',
+            'slug' => 'scope',
+            'type' => 'scope',
+        ], [
+            'description' => 'Organizational scope categories',
+        ]);
+
+        Taxonomy::firstOrCreate([
+            'name' => 'Global',
+            'slug' => 'global',
+            'type' => 'scope',
+            'parent_id' => $scopeTaxonomy->id,
+        ], [
+            'description' => 'Global scope',
+        ]);
+
+        // Create Department taxonomy with Security term
+        $departmentTaxonomy = Taxonomy::firstOrCreate([
+            'name' => 'Department',
+            'slug' => 'department',
+            'type' => 'department',
+        ], [
+            'description' => 'Organizational departments',
+        ]);
+
+        Taxonomy::firstOrCreate([
+            'name' => 'Security',
+            'slug' => 'security',
+            'type' => 'department',
+            'parent_id' => $departmentTaxonomy->id,
+        ], [
+            'description' => 'Security department',
+        ]);
     }
 
     /**
@@ -66,6 +112,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Remove taxonomy terms
+        Taxonomy::whereIn('type', ['scope', 'department'])->delete();
+
         // Remove Taxonomy permissions
         $taxonomyActions = ['List', 'Create', 'Read', 'Update', 'Delete'];
         foreach ($taxonomyActions as $action) {
