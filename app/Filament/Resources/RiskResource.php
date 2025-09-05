@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\RiskStatus;
+use App\Filament\Concerns\HasTaxonomyFields;
 use App\Filament\Resources\RiskResource\Pages;
 use App\Filament\Resources\RiskResource\RelationManagers\ImplementationsRelationManager;
 use App\Models\Risk;
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class RiskResource extends Resource
 {
+    use HasTaxonomyFields;
+    
     protected static ?string $model = Risk::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-fire';
@@ -112,6 +115,12 @@ class RiskResource extends Resource
                     ->enum(RiskStatus::class)
                     ->options(RiskStatus::class)
                     ->required(),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
             ]);
     }
 
@@ -157,8 +166,85 @@ class RiskResource extends Resource
                     ->color(function (Risk $record) {
                         return self::getRiskColor($record->residual_likelihood, $record->residual_impact);
                     }),
+                Tables\Columns\TextColumn::make('department')
+                    ->label('Department')
+                    ->formatStateUsing(function (Risk $record) {
+                        $department = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Department');
+                            })
+                            ->first();
+                        return $department?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('scope')
+                    ->label('Scope')
+                    ->formatStateUsing(function (Risk $record) {
+                        $scope = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Scope');
+                            })
+                            ->first();
+                        return $scope?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                Tables\Filters\SelectFilter::make('department')
+                    ->label('Department')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
+                            ->whereNull('parent_id')
+                            ->first();
+                        
+                        if (!$taxonomy) {
+                            return [];
+                        }
+                        
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (!$data['value']) {
+                            return;
+                        }
+                        
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
+                Tables\Filters\SelectFilter::make('scope')
+                    ->label('Scope')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
+                            ->whereNull('parent_id')
+                            ->first();
+                        
+                        if (!$taxonomy) {
+                            return [];
+                        }
+                        
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (!$data['value']) {
+                            return;
+                        }
+                        
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make()
                     ->slideOver()

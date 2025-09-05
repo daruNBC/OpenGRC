@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Aliziodev\LaravelTaxonomy\Traits\HasTaxonomy;
 use App\Enums\Applicability;
 use App\Enums\ControlCategory;
 use App\Enums\ControlEnforcementCategory;
@@ -54,7 +55,7 @@ use Illuminate\Support\Carbon;
  */
 class Control extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTaxonomy;
 
     /**
      * Indicates if the model should be indexed as you type.
@@ -174,4 +175,5 @@ class Control extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'control_owner_id');
     }
+
 }

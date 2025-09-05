@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Aliziodev\LaravelTaxonomy\Traits\HasTaxonomy;
 use App\Enums\StandardStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ use Illuminate\Support\Carbon;
  */
 class Standard extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTaxonomy;
 
     /**
      * The attributes that should be cast.

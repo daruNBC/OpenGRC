@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\HasTaxonomyFields;
 use App\Filament\Resources\ProgramResource\Pages;
 use App\Filament\Resources\ProgramResource\RelationManagers;
 use App\Models\Program;
@@ -13,6 +14,8 @@ use Filament\Tables\Table;
 
 class ProgramResource extends Resource
 {
+    use HasTaxonomyFields;
+
     protected static ?string $model = Program::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
@@ -68,6 +71,12 @@ class ProgramResource extends Resource
                         'Pending Review' => __('programs.scope_status.pending_review'),
                     ])
                     ->required(),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
             ]);
     }
 
@@ -95,6 +104,34 @@ class ProgramResource extends Resource
                 Tables\Columns\TextColumn::make('scope_status')
                     ->label(__('programs.table.scope_status'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('department')
+                    ->label('Department')
+                    ->formatStateUsing(function (Program $record) {
+                        $department = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Department');
+                            })
+                            ->first();
+
+                        return $department?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('scope')
+                    ->label('Scope')
+                    ->formatStateUsing(function (Program $record) {
+                        $scope = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Scope');
+                            })
+                            ->first();
+
+                        return $scope?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('programs.table.created_at'))
                     ->dateTime()
@@ -107,7 +144,56 @@ class ProgramResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('department')
+                    ->label('Department')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
+                            ->whereNull('parent_id')
+                            ->first();
+
+                        if (! $taxonomy) {
+                            return [];
+                        }
+
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (! $data['value']) {
+                            return;
+                        }
+
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
+                Tables\Filters\SelectFilter::make('scope')
+                    ->label('Scope')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
+                            ->whereNull('parent_id')
+                            ->first();
+
+                        if (! $taxonomy) {
+                            return [];
+                        }
+
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (! $data['value']) {
+                            return;
+                        }
+
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

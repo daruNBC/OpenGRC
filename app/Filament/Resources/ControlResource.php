@@ -8,6 +8,7 @@ use App\Enums\ControlCategory;
 use App\Enums\ControlEnforcementCategory;
 use App\Enums\ControlType;
 use App\Enums\Effectiveness;
+use App\Filament\Concerns\HasTaxonomyFields;
 use App\Filament\Resources\ControlResource\Pages;
 use App\Filament\Resources\ControlResource\RelationManagers;
 use App\Models\Control;
@@ -30,6 +31,8 @@ use Illuminate\Support\HtmlString;
 
 class ControlResource extends Resource
 {
+    use HasTaxonomyFields;
+
     protected static ?string $model = Control::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-stop-circle';
@@ -92,6 +95,18 @@ class ControlResource extends Resource
                     ->maxLength(1024)
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('control.form.title.tooltip'))
                     ->maxLength(1024),
+                Forms\Components\Select::make('control_owner_id')
+                    ->label('Control Owner')
+                    ->options(User::pluck('name', 'id')->toArray())
+                    ->searchable()
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Department')
+                    ->nullable()
+                    ->columnSpan(1),
+                self::taxonomySelect('Scope')
+                    ->nullable()
+                    ->columnSpan(1),
                 TinyEditor::make('description')
                     ->required()
                     ->maxLength(65535)
@@ -107,12 +122,6 @@ class ControlResource extends Resource
                     ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('control.form.test.tooltip'))
                     ->maxLength(65535)
                     ->columnSpanFull(),
-                Forms\Components\Select::make('control_owner_id')
-                    ->label('Control Owner')
-                    ->options(User::pluck('name', 'id')->toArray())
-                    ->searchable()
-                    ->nullable()
-                    ->columnSpan(1),
             ]);
     }
 
@@ -180,6 +189,34 @@ class ControlResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->toggleable(),
+                Tables\Columns\TextColumn::make('department')
+                    ->label('Department')
+                    ->formatStateUsing(function (Control $record) {
+                        $department = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Department');
+                            })
+                            ->first();
+
+                        return $department?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('scope')
+                    ->label('Scope')
+                    ->formatStateUsing(function (Control $record) {
+                        $scope = $record->taxonomies()
+                            ->whereHas('parent', function ($query) {
+                                $query->where('name', 'Scope');
+                            })
+                            ->first();
+
+                        return $scope?->name ?? 'Not assigned';
+                    })
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('control.table.columns.created_at'))
                     ->dateTime()
@@ -214,6 +251,56 @@ class ControlResource extends Resource
                 Tables\Filters\SelectFilter::make('control_owner_id')
                     ->label('Owner')
                     ->options(User::pluck('name', 'id')->toArray()),
+                Tables\Filters\SelectFilter::make('department')
+                    ->label('Department')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Department')
+                            ->whereNull('parent_id')
+                            ->first();
+
+                        if (! $taxonomy) {
+                            return [];
+                        }
+
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (! $data['value']) {
+                            return;
+                        }
+
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
+                Tables\Filters\SelectFilter::make('scope')
+                    ->label('Scope')
+                    ->options(function () {
+                        $taxonomy = \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('name', 'Scope')
+                            ->whereNull('parent_id')
+                            ->first();
+
+                        if (! $taxonomy) {
+                            return [];
+                        }
+
+                        return \Aliziodev\LaravelTaxonomy\Models\Taxonomy::where('parent_id', $taxonomy->id)
+                            ->orderBy('name')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->query(function ($query, array $data) {
+                        if (! $data['value']) {
+                            return;
+                        }
+
+                        $query->whereHas('taxonomies', function ($query) use ($data) {
+                            $query->where('taxonomy_id', $data['value']);
+                        });
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -269,6 +356,28 @@ class ControlResource extends Resource
                         TextEntry::make('lastAuditDate')
                             ->default(function (Control $record) {
                                 return $record->getEffectivenessDate();
+                            }),
+                        TextEntry::make('taxonomies')
+                            ->label('Department')
+                            ->formatStateUsing(function (Control $record) {
+                                $department = $record->taxonomies()
+                                    ->whereHas('parent', function ($query) {
+                                        $query->where('name', 'Department');
+                                    })
+                                    ->first();
+
+                                return $department?->name ?? 'Not assigned';
+                            }),
+                        TextEntry::make('taxonomies')
+                            ->label('Scope')
+                            ->formatStateUsing(function (Control $record) {
+                                $scope = $record->taxonomies()
+                                    ->whereHas('parent', function ($query) {
+                                        $query->where('name', 'Scope');
+                                    })
+                                    ->first();
+
+                                return $scope?->name ?? 'Not assigned';
                             }),
                         TextEntry::make('description')
                             ->columnSpanFull()

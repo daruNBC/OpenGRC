@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Aliziodev\LaravelTaxonomy\Traits\HasTaxonomy;
 use App\Enums\WorkflowStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
@@ -49,7 +50,7 @@ use Illuminate\Support\Carbon;
  */
 class Audit extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTaxonomy;
 
     /**
      * The attributes that are mass assignable.

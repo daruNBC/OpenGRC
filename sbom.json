@@ -2,10 +2,10 @@
     "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
     "bomFormat": "CycloneDX",
     "specVersion": "1.5",
-    "serialNumber": "urn:uuid:8edb4754-d1e4-4c82-ada5-f22b6dfb397d",
+    "serialNumber": "urn:uuid:8b81e2a0-541d-48af-8cde-314ce5a60aa2",
     "version": 1,
     "metadata": {
-        "timestamp": "2025-09-01T23:30:34Z",
+        "timestamp": "2025-09-02T22:29:46Z",
         "tools": [
             {
                 "name": "composer",
@@ -99,11 +99,11 @@
             "properties": [
                 {
                     "name": "cdx:composer:package:distReference",
-                    "value": "9f4e59a5d0419e345ed48dc57b6491fa4bceb9f6"
+                    "value": "b5c9f50b6dad34eda5a051c43c38c43b15445083"
                 },
                 {
                     "name": "cdx:composer:package:sourceReference",
-                    "value": "9f4e59a5d0419e345ed48dc57b6491fa4bceb9f6"
+                    "value": "b5c9f50b6dad34eda5a051c43c38c43b15445083"
                 },
                 {
                     "name": "cdx:composer:package:type",
@@ -113,6 +113,59 @@
         }
     },
     "components": [
+        {
+            "bom-ref": "aliziodev/laravel-taxonomy-2.6.0.0",
+            "type": "library",
+            "name": "laravel-taxonomy",
+            "version": "v2.6.0",
+            "group": "aliziodev",
+            "description": "Laravel Taxonomy is a flexible and powerful package for managing taxonomies, categories, tags, and hierarchical structures in Laravel applications. Features nested-set support for optimal query performance on hierarchical data structures.",
+            "author": "Alizio",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "MIT"
+                    }
+                }
+            ],
+            "purl": "pkg:composer/aliziodev/laravel-taxonomy@v2.6.0",
+            "externalReferences": [
+                {
+                    "type": "distribution",
+                    "url": "https://api.github.com/repos/aliziodev/laravel-taxonomy/zipball/fa75256509433e580bddb38d15d1cdda10b6eb51",
+                    "comment": "dist reference: fa75256509433e580bddb38d15d1cdda10b6eb51"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/aliziodev/laravel-taxonomy.git",
+                    "comment": "source reference: fa75256509433e580bddb38d15d1cdda10b6eb51"
+                },
+                {
+                    "type": "issue-tracker",
+                    "url": "https://github.com/aliziodev/laravel-taxonomy/issues",
+                    "comment": "as detected from Composer manifest 'support.issues'"
+                },
+                {
+                    "type": "vcs",
+                    "url": "https://github.com/aliziodev/laravel-taxonomy/tree/v2.6.0",
+                    "comment": "as detected from Composer manifest 'support.source'"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "cdx:composer:package:distReference",
+                    "value": "fa75256509433e580bddb38d15d1cdda10b6eb51"
+                },
+                {
+                    "name": "cdx:composer:package:sourceReference",
+                    "value": "fa75256509433e580bddb38d15d1cdda10b6eb51"
+                },
+                {
+                    "name": "cdx:composer:package:type",
+                    "value": "library"
+                }
+            ]
+        },
         {
             "bom-ref": "amidesfahani/filament-tinyeditor-2.1.1.0",
             "type": "library",
@@ -282,10 +335,10 @@
             ]
         },
         {
-            "bom-ref": "aws/aws-sdk-php-3.356.8.0",
+            "bom-ref": "aws/aws-sdk-php-3.356.9.0",
             "type": "library",
             "name": "aws-sdk-php",
-            "version": "3.356.8",
+            "version": "3.356.9",
             "group": "aws",
             "description": "AWS SDK for PHP - Use Amazon Web Services in your PHP project",
             "author": "Amazon Web Services",
@@ -296,17 +349,17 @@
                     }
                 }
             ],
-            "purl": "pkg:composer/aws/aws-sdk-php@3.356.8",
+            "purl": "pkg:composer/aws/aws-sdk-php@3.356.9",
             "externalReferences": [
                 {
                     "type": "distribution",
-                    "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/3efa8c62c11fedb17b90f60b2d3a9f815b406e63",
-                    "comment": "dist reference: 3efa8c62c11fedb17b90f60b2d3a9f815b406e63"
+                    "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/42e1ac9cbb06b98ead34e32bd565f262161b77ab",
+                    "comment": "dist reference: 42e1ac9cbb06b98ead34e32bd565f262161b77ab"
                 },
                 {
                     "type": "vcs",
                     "url": "https://github.com/aws/aws-sdk-php.git",
-                    "comment": "source reference: 3efa8c62c11fedb17b90f60b2d3a9f815b406e63"
+                    "comment": "source reference: 42e1ac9cbb06b98ead34e32bd565f262161b77ab"
                 },
                 {
                     "type": "website",
@@ -325,18 +378,18 @@
                 },
                 {
                     "type": "vcs",
-                    "url": "https://github.com/aws/aws-sdk-php/tree/3.356.8",
+                    "url": "https://github.com/aws/aws-sdk-php/tree/3.356.9",
                     "comment": "as detected from Composer manifest 'support.source'"
                 }
             ],
             "properties": [
                 {
                     "name": "cdx:composer:package:distReference",
-                    "value": "3efa8c62c11fedb17b90f60b2d3a9f815b406e63"
+                    "value": "42e1ac9cbb06b98ead34e32bd565f262161b77ab"
                 },
                 {
                     "name": "cdx:composer:package:sourceReference",
-                    "value": "3efa8c62c11fedb17b90f60b2d3a9f815b406e63"
+                    "value": "42e1ac9cbb06b98ead34e32bd565f262161b77ab"
                 },
                 {
                     "name": "cdx:composer:package:type",
@@ -12016,6 +12069,12 @@
     ],
     "dependencies": [
         {
+            "ref": "aliziodev/laravel-taxonomy-2.6.0.0",
+            "dependsOn": [
+                "laravel/framework-11.45.2.0"
+            ]
+        },
+        {
             "ref": "amidesfahani/filament-tinyeditor-2.1.1.0",
             "dependsOn": [
                 "spatie/laravel-package-tools-1.92.7.0",
@@ -12032,7 +12091,7 @@
             "ref": "aws/aws-crt-php-1.2.7.0"
         },
         {
-            "ref": "aws/aws-sdk-php-3.356.8.0",
+            "ref": "aws/aws-sdk-php-3.356.9.0",
             "dependsOn": [
                 "aws/aws-crt-php-1.2.7.0",
                 "guzzlehttp/guzzle-7.10.0.0",
@@ -12489,7 +12548,7 @@
         {
             "ref": "league/flysystem-aws-s3-v3-3.29.0.0",
             "dependsOn": [
-                "aws/aws-sdk-php-3.356.8.0",
+                "aws/aws-sdk-php-3.356.9.0",
                 "league/flysystem-3.30.0.0",
                 "league/mime-type-detection-1.16.0.0"
             ]
@@ -13233,6 +13292,7 @@
         {
             "ref": "laravel/laravel-dev-main",
             "dependsOn": [
+                "aliziodev/laravel-taxonomy-2.6.0.0",
                 "amidesfahani/filament-tinyeditor-2.1.1.0",
                 "barryvdh/laravel-dompdf-3.1.1.0",
                 "bezhansalleh/filament-language-switch-3.1.1.0",

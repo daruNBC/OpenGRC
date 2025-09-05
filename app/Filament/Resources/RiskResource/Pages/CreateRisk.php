@@ -67,6 +67,14 @@ class CreateRisk extends CreateRecord
                         ->columnSpanFull()
                         ->maxLength(4096)
                         ->helperText('Provide a description of the risk that will help others understand it'),
+                    RiskResource::taxonomySelect('Department')
+                        ->nullable()
+                        ->columnSpan(2)
+                        ->helperText('Select the department responsible for this risk'),
+                    RiskResource::taxonomySelect('Scope')
+                        ->nullable()
+                        ->columnSpan(2)
+                        ->helperText('Select the scope this risk applies to'),
                 ]),
 
             Step::make('Inherent Risk')
