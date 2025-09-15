@@ -7,6 +7,9 @@ use Filament\Support\Contracts\HasLabel;
 
 enum ApplicationType: string implements HasColor, HasLabel
 {
+    case TE = 'Telecom Exchange';
+    case PGCC = 'Power Grid Control Center';
+    case SCADA = 'SCADA System';
     case SAAS = 'SaaS';
     case DESKTOP = 'Desktop';
     case SERVER = 'Server';
@@ -16,6 +19,9 @@ enum ApplicationType: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            self::TE => 'Telecom Exchange',
+            self::PGCC => 'Power Grid Control Center',
+            self::SCADA => 'SCADA System',
             self::SAAS => 'SaaS',
             self::DESKTOP => 'Desktop',
             self::SERVER => 'Server',
@@ -27,6 +33,9 @@ enum ApplicationType: string implements HasColor, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
+            self::TE => 'primary',
+            self::PGCC => 'primary',
+            self::SCADA => 'primary',
             self::SAAS => 'primary',
             self::DESKTOP => 'info',
             self::SERVER => 'success',

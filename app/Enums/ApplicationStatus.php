@@ -7,28 +7,25 @@ use Filament\Support\Contracts\HasLabel;
 
 enum ApplicationStatus: string implements HasColor, HasLabel
 {
-    case APPROVED = 'Approved';
-    case REJECTED = 'Rejected';
-    case LIMITED = 'Limited';
-    case EXPIRED = 'Expired';
+    case ACTIVE = 'Active (In use)';
+    case CANDIDATE = 'Candidate (Under review)';
+    case RETIRED = 'Retired (No longer in use)';
 
     public function getLabel(): ?string
     {
         return match ($this) {
-            self::APPROVED => 'Approved',
-            self::REJECTED => 'Rejected',
-            self::LIMITED => 'Limited',
-            self::EXPIRED => 'Expired',
+            self::ACTIVE => 'Active (In use)',
+            self::CANDIDATE => 'Candidate (Under review)',
+            self::RETIRED => 'Retired (No longer in use)',
         };
     }
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::APPROVED => 'success',
-            self::REJECTED => 'danger',
-            self::LIMITED => 'warning',
-            self::EXPIRED => 'gray',
+            self::ACTIVE => 'success',
+            self::CANDIDATE => 'gray',
+            self::RETIRED => 'warning',
         };
     }
 }

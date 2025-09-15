@@ -24,6 +24,7 @@ class ListRisks extends ListRecords
         return [
             RiskResource\Widgets\InherentRisk::class,
             RiskResource\Widgets\ResidualRisk::class,
+            RiskResource\Widgets\RiskStatsOverview::class,
         ];
     }
 }

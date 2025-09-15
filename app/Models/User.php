@@ -7,6 +7,7 @@ use App\Traits\Concerns\HasSuperAdmin;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,6 +15,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -31,6 +33,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'institution_id',
+        'code',
     ];
 
     /**
@@ -86,6 +90,14 @@ class User extends Authenticatable implements FilamentUser
         //         $user->last_activity = $user->getOriginal('last_activity');
         //     }
         // });
+        // --- ADD THIS LOGIC ---
+        // It will run every time a new user is being created.
+        static::creating(function ($user) {
+            if (empty($user->code)) {
+                // Generate a unique code, e.g., USR-A8B2C1
+                $user->code = 'USR-' . strtoupper(Str::random(6));
+            }
+        });
     }
 
     /**
@@ -125,5 +137,9 @@ class User extends Authenticatable implements FilamentUser
     public function managedPrograms(): HasMany
     {
         return $this->hasMany(Program::class, 'program_manager_id');
+    }
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 }

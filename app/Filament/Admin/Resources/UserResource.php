@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash; 
+use Filament\Pages\Page;
 
 class UserResource extends Resource
 {
@@ -55,6 +57,12 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)) 
+                    ->dehydrated(fn ($state) => filled($state)) 
+                    ->required(fn (Page $livewire): bool => $livewire instanceof Pages\CreateUser) 
+                    ->maxLength(255),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -69,6 +77,11 @@ class UserResource extends Resource
                     )
                     ->label('Last Activity')
                     ->disabled(),
+                Forms\Components\Select::make('institution_id')
+                ->relationship('institution', 'label')
+                ->searchable()
+                ->preload()
+                ->label('Institution'),
             ]);
     }
 
