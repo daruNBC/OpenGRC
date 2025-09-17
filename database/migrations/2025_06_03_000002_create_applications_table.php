@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('owner_id')->constrained('users');
             $table->enum('type', array_column(ApplicationType::cases(), 'value'))->default(ApplicationType::OTHER->value);
             $table->longText('description')->nullable();
-            $table->enum('status', array_column(ApplicationStatus::cases(), 'value'))->default(ApplicationStatus::APPROVED->value);
+            $table->enum('status', array_column(ApplicationStatus::cases(), 'value'))->default(ApplicationStatus::ACTIVE->value);
             $table->string('url', 512)->nullable();
             $table->longText('notes')->nullable();
             $table->foreignId('vendor_id')->constrained('vendors');
