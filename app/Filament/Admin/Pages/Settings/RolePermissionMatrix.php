@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Admin\Pages;
+namespace App\Filament\Admin\Pages\Settings;
 
 use App\Filament\Forms\Components\PermissionMatrix;
 use Filament\Actions\Action;
